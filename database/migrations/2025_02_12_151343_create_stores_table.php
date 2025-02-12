@@ -15,9 +15,12 @@ return new class extends Migration
         $table->id(); 
         $table->string('name'); 
         $table->string('email')->unique(); 
-        $table->string('document_type'); 
-        $table->string('document'); 
+        $table->string('document');
+        $table->enum('document_type', ['cpf', 'cnpj']);
         $table->timestamps(); 
+        $table->softDeletes();
+        
+        $table->unique('document', 'document_type');
     });
 }
 

@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('product_transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger("user_id");
-            $table->unsignedInteger("product_id");
+            $table->foreignId("user_id");
+            $table->foreignId("product_id");
             $table->integer("total");
-            $table->enum('type', ['purchase', 'sale', 'refund']);
-            $table->enum('payment_method', ['credit_card', 'bank_transfer', 'pix','bank_slip']);
+            $table->enum('type', ['added', 'removed', 'transferred']);
+            $table->enum('payment_method', ['credit_card', 'bank_transfer', 'pix','bank_slip','money']);
+            $table->enum('local', ['store', 'stock']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

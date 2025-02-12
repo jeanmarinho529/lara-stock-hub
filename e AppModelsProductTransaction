@@ -1,0 +1,29 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#5239
+    [34mall[39m: [
+      [34;4mApp\Models\ProductTransaction[39;24m {#6342
+        [34mid[39m: [35m1[39m,
+        [34muser_id[39m: [35m1[39m,
+        [34mproduct_id[39m: [35m101[39m,
+        [34mtotal[39m: [35m50[39m,
+        [34mtype[39m: "[32madded[39m",
+        [34mpayment_method[39m: "[32mcredit_card[39m",
+        [34mlocal[39m: "[32mstore[39m",
+        [34mcreated_at[39m: "[32m2025-02-12 20:23:00[39m",
+        [34mupdated_at[39m: "[32m2025-02-12 20:23:00[39m",
+        [34mdeleted_at[39m: [36mnull[39m,
+      },
+      [34;4mApp\Models\ProductTransaction[39;24m {#6348
+        [34mid[39m: [35m2[39m,
+        [34muser_id[39m: [35m1[39m,
+        [34mproduct_id[39m: [35m101[39m,
+        [34mtotal[39m: [35m50[39m,
+        [34mtype[39m: "[32madded[39m",
+        [34mpayment_method[39m: "[32mcredit_card[39m",
+        [34mlocal[39m: "[32mstore[39m",
+        [34mcreated_at[39m: "[32m2025-02-12 20:24:37[39m",
+        [34mupdated_at[39m: "[32m2025-02-12 20:24:37[39m",
+        [34mdeleted_at[39m: [36mnull[39m,
+      },
+    ],
+  }
+

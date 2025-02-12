@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger("user_id");
-            $table->unsignedInteger("store_id");
+            $table->foreignId("user_id");
+            $table->foreignId("store_id");
             $table->string("name");
-            $table->string("description");
-            $table->integer("amount");
+            $table->text("description")->nullable();
+            $table->double("amount");
             $table->integer("minimum_quantity")->unsigned()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
