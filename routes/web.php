@@ -1,5 +1,5 @@
 <?php
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,7 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/users',[UserController::class, 'index'])->name('users.index');
+Route::get('importar', [UserController::class, 'importForm']);
+Route::post('importar', [UserController::class, 'import']);
+Route::match(['get', 'post'], 'importar', [UserController::class, 'import']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
