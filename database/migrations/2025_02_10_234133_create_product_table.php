@@ -13,11 +13,6 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            // adicionar tipo de produto
-            // acessorio, produto quimico,
-            // 
-            // 
-            // 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('store_id');
             $table->string('name');
