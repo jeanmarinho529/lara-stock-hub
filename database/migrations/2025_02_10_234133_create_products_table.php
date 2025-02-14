@@ -16,8 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('store_id');
             $table->string('name');
+            $table->string('slug')->index();
             $table->text('description')->nullable();
-            $table->double('amount');
+            $table->double('amount')->unsigned();
             $table->integer('minimum_quantity')->unsigned()->default(1);
             $table->string('code');
             $table->timestamps();
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('products');
     }
 };

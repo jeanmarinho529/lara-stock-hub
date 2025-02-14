@@ -16,5 +16,7 @@ class ProductTransaction extends Model
         'type',
         'payment_method',
         'local',
+        'amount',
+        'amount_received',
     ];
 }

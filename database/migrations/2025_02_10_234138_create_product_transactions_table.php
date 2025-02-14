@@ -17,8 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->integer('total');
             $table->enum('type', ['added', 'removed', 'transferred', 'sold']);
-            $table->enum('payment_method', ['credit_card', 'bank_transfer', 'pix','bank_slip', 'cash']);
+            $table->enum('payment_method', 
+                ['credit_card', 'bank_transfer', 'pix','bank_slip', 'cash']
+            )->nullable();
             $table->enum('local', ['store', 'stock', 'others']);
+            $table->double('amount')->unsigned();
+            $table->double('amount_received')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
