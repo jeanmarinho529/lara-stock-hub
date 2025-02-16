@@ -11,23 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_transactions', function (Blueprint $table) {
+        Schema::create('item_transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('product_id');
-            $table->integer('total');
+            $table->integer('quantity');
             $table->enum('type', ['added', 'removed', 'transferred', 'sold']);
-            $table->enum('payment_method', 
-                ['credit_card', 'bank_transfer', 'pix','bank_slip', 'cash']
-            )->nullable();
             $table->enum('local', ['store', 'stock', 'others']);
             $table->double('amount')->unsigned();
             $table->double('amount_received')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
@@ -36,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_transactions');
+        Schema::dropIfExists('item_transactions');
     }
 };

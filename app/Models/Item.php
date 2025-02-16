@@ -7,8 +7,9 @@ use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Item extends Model
 {
+    // Item
     use SoftDeletes;
     use HasSlug;
 
@@ -16,11 +17,11 @@ class Product extends Model
         'user_id',
         'store_id',
         'name',
+        'slug',
         'description',
         'amount',
         'code',
         'minimum_quantity',
-        'slug'
     ];
 
     public function getSlugOptions() : SlugOptions

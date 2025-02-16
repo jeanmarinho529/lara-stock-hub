@@ -20,7 +20,7 @@ return new class extends Migration
         $table->timestamps(); 
         $table->softDeletes();
         
-        $table->unique('document', 'document_type');
+        $table->unique(['document', 'document_type'], 'unq_stores');
     });
 }
 

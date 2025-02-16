@@ -9,13 +9,15 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Auth;
 
 
-class ProductsImport implements ToModel, WithHeadingRow
+class ImportImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
+        // ver para passar isso no constutor
+        // para jogar em um job
         $user = Auth::user();
 
-        $product = Item::firstOrCreate([
+        $item = Item::firstOrCreate([
             'store_id' => $user->store_id,
             'code' => $row['codigo_do_produto'],
         ], [
@@ -28,15 +30,15 @@ class ProductsImport implements ToModel, WithHeadingRow
 
         ItemTransaction::create([
             'user_id' => $user->id,
-            'product_id' => $product->id,
+            'product_id' => $item->id,
             'total' => $row['total_da_movimentacao'],
             'type' => $row['tipo_da_movimentacao'] ?? 'added',
             'payment_method' => $row['metodo_de_pagamento'] ?? 'cash',
             'local' => $row['local'] ?? 'store',
-            'amount' => $product->amount,
-            'amount_received' => $row['valor_da_venda'] ?? $product->amount
+            'amount' => $item->amount,
+            'amount_received' => $row['valor_da_venda'] ?? $item->amount
         ]);
 
-        return $product;
+        return $item;
     }
 }

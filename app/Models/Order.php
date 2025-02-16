@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductTransaction extends Model
+class Order extends Model
 {
     use SoftDeletes;
-    
+
     protected $fillable = [
+        'client_id',
         'user_id',
-        'product_id',
-        'total',
-        'type',
+        'store_id',
         'payment_method',
-        'local',
+        'installments',
         'amount',
         'amount_received',
     ];

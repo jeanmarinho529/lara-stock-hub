@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Product;
-use App\Models\ProductTransaction;
+use App\Models\Item;
+use App\Models\ItemTransaction;
 use Livewire\Component;
 
 class Sale extends Component
@@ -11,7 +11,7 @@ class Sale extends Component
     // tem que adicionar quantidade
 
     public string $searchProduct = "";
-    public array $productItems = [];
+    public $productItems = [];
     public $products = [];
 
     public function render()
@@ -21,17 +21,23 @@ class Sale extends Component
 
     public function addProduct()
     {
-        $product = Product::select('id', 'name', 'code', 'amount')
+        // se for code adiciona automaticamente 
+        // se for nome mostra opções
+        $product = Item::select('id', 'name', 'code', 'amount')
             ->where('code', $this->searchProduct)
-            ->orWhere('name', $this->searchProduct)
-            ->first();
+            // ->orWhere('name', $this->searchProduct)
+            ->first()
+            ->toArray();
 
-        $this->productItems[] = $product;
+        if ($product) {
+            $product['total'] = 1;
+            $this->productItems[] = $product;
+        }
     }
 
     public function sales()
     {
-        ProductTransaction::first();
+        ItemTransaction::first();
     }
 
     // Método que é chamado toda vez que a variável searchProduct é atualizada

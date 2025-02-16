@@ -11,23 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('store_id');
-            $table->string('name');
-            $table->string('slug')->index();
-            $table->text('description')->nullable();
+            $table->enum('payment_method', 
+                ['credit_card', 'bank_transfer', 'pix','bank_slip', 'cash']
+            )->nullable();
+            $table->tinyInteger('installments')->default(1);
             $table->double('amount')->unsigned();
-            $table->integer('minimum_quantity')->unsigned()->default(1);
-            $table->string('code');
+            $table->double('amount_received')->unsigned();
             $table->timestamps();
             $table->softDeletes();
- 
+
+            $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('store_id')->references('id')->on('stores');
-
-            $table->unique('code', 'store_id');
         });
     }
 
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('orders');
     }
 };
