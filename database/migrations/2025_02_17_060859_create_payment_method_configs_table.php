@@ -11,25 +11,24 @@ return new class () extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('payment_method_configs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('store_id');
-            $table->unsignedBigInteger('user_id');
+            $table->enum(
+                'type',
+                ['receivable', 'payable']
+            )->nullable();
             $table->enum(
                 'payment_method',
                 ['credit_card', 'bank_transfer', 'pix', 'bank_slip', 'cash']
             )->nullable();
-            $table->tinyInteger('installments')->default(1);
-            $table->double('amount')->unsigned();
-            $table->double('amount_received')->unsigned();
-            $table->text('description')->nullable();
+            $table->tinyInteger('installments');
+            $table->tinyInteger('transaction_effective_date');
+            $table->boolean('auto_deduction');
             $table->timestamps();
-            $table->softDeletes();
 
-            $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('store_id')->references('id')->on('stores');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['store_id', 'type', 'payment_method', 'installments'], 'unq_payment_method_configs');
         });
     }
 
@@ -38,6 +37,6 @@ return new class () extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('payment_method_configs');
     }
 };

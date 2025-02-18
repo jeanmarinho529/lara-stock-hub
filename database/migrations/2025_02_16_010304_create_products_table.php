@@ -11,14 +11,14 @@ return new class () extends Migration
      */
     public function up(): void
     {
-        Schema::create('stock_items', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('brand_id');
+            $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('user_id');
             $table->string('name');
-            $table->string('slug')->index();
             $table->string('code');
+            $table->enum('type', ['product', 'service'])->default('product');
             $table->double('amount')->unsigned();
             $table->integer('minimum_quantity')->unsigned()->default(1);
             $table->enum(
@@ -33,7 +33,7 @@ return new class () extends Migration
             $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->unique(['brand_id', 'store_id', 'code'], 'unq_stock_items');
+            $table->unique(['brand_id', 'store_id', 'code'], 'unq_products');
         });
     }
 
@@ -42,6 +42,6 @@ return new class () extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock_items');
+        Schema::dropIfExists('products');
     }
 };

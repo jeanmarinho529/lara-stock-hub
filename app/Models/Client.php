@@ -20,4 +20,14 @@ class Client extends Model
         'cell_number',
         'cell_number_is_whatsapp',
     ];
+
+    public function getDisplayTypeAttribute()
+    {
+        $type = [
+            'client'   => 'Cliente',
+            'supplier' => 'Fornecedor',
+        ];
+
+        return $type[$this->type];
+    }
 }
