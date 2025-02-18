@@ -19,7 +19,7 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::withoutMiddleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('vendas/', IndexOrder::class)->name('orders.index');
     Route::get('vendas/{orderId}', ShowOrder::class)->name('orders.show');
 
