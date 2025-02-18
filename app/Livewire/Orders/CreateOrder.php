@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Orders;
 
-use App\Livewire\Forms\ClientForm;
-use App\Livewire\Forms\OrderForm;
 use App\Models\Client;
 use App\Models\FinancialTransaction;
 use App\Models\Order;
@@ -14,44 +12,63 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\Attributes\Validate;
 
 class CreateOrder extends Component
 {
-    public Client $client;
-
-    public ClientForm $clientForm;
-
-    public OrderForm $order;
-
     public User $user;
+
+    # request client 
+    #[Validate('required|string|numeric')]
+    public string $client_id;
+
+    #[Validate('required|string')]
+    public string $client_name;
+
+    #[Validate('required|string')]
+    public string $client_document;
+
+    #[Validate('required|string')]
+    public string $client_cell_number;
+
+    # request order
+    #[Validate('required|numeric|min:0')]
+    public float $total = 0;
+
+    #[Validate('required|string|in:cash,pix,credit_card,bank_slip,bank_transfer')]
+    public string $payment_method = '';
+
+    #[Validate('required|integer|min:1')]
+    public int $installments = 1;
+
+    #[Validate('required|numeric|min:0')]
+    public float $discount = 0;
+
+    #[Validate('required|string|in:percentage,absolute_value')]
+    public string $discount_type = 'percentage';
+
+    #[Validate('required|numeric|min:0')]
+    public float $amount_received = 0;
 
     public array $products;
 
+    public array $productDefaults = [];
+
     public array $selectedProducts = [];
-
-    public float $total = 0;
-
-    public string $paymentMethod = '';
-
-    public int $installments = 1;
-
-    public float $discount = 0;
-
-    public string $discountType = 'percentage';
-
-    public float $amountReceived = 0;
 
     public bool $saleMade = false;
 
     public string $searchTerm = '';
 
-    public array $productDefaults = [];
 
     public function mount(Client $client)
     {
         $this->user = Auth::user();
 
-        $this->clientForm->setClient($client);
+        $this->client_id = $client->id;
+        $this->client_name = $client->name;
+        $this->client_document = $client->document;
+        $this->client_cell_number = $client->cell_number;
 
         $this->productDefaults = Product::searchByName($this->user->store_id)
             ->limit(10)
@@ -66,11 +83,11 @@ class CreateOrder extends Component
         return view('livewire.orders.create-order');
     }
 
-    public function addItem($item): void
+    public function addProduct($item): void
     {
         if (array_key_exists($item['code'], $this->selectedProducts)) {
             $this->selectedProducts[$item['code']]['quantity'] += 1;
-            $this->calculateTotalItem($item['code']);
+            $this->calculateTotalProduct($item['code']);
 
             return;
         }
@@ -82,19 +99,19 @@ class CreateOrder extends Component
         $this->calculateTotal();
     }
 
-    public function removeItem($code): void
+    public function removeProduct($code): void
     {
         unset($this->selectedProducts[$code]);
         $this->calculateTotal();
     }
 
-    public function calculateTotalItem($code)
+    public function calculateTotalProduct($code): void
     {
         $this->selectedProducts[$code]['total'] = $this->selectedProducts[$code]['quantity'] * $this->selectedProducts[$code]['amount'];
         $this->calculateTotal();
     }
 
-    public function calculateTotal()
+    public function calculateTotal(): void
     {
         $this->total = 0;
 
@@ -105,15 +122,15 @@ class CreateOrder extends Component
         $this->calculateAmountReceived();
     }
 
-    public function calculateAmountReceived()
+    public function calculateAmountReceived(): void
     {
-        if ($this->discountType == 'percentage' and $this->discount > 0) {
-            $this->amountReceived = $this->total * (1 - $this->discount / 100);
+        if ($this->discount_type == 'percentage' and $this->discount > 0) {
+            $this->amount_received = $this->total * (1 - $this->discount / 100);
         } else {
-            $this->amountReceived = $this->total - $this->discount;
+            $this->amount_received = $this->total - $this->discount;
         }
 
-        $this->amountReceived = round($this->amountReceived, 2);
+        $this->amount_received = round($this->amount_received, 2);
     }
 
     public function save()
@@ -130,23 +147,23 @@ class CreateOrder extends Component
             return;
         }
 
-        $this->calculateAmountReceived();
-
         $paymentMethodConfigs = PaymentMethodConfig::where('type', 'receivable')
-            ->where('payment_method', $this->paymentMethod)
+            ->where('payment_method', $this->payment_method)
             ->where('store_id', $this->user->store_id)
             ->get();
 
         try {
+            $this->validate();
+
             DB::transaction(function () use ($paymentMethodConfigs) {
                 $order = Order::create([
-                    'client_id'       => $this->client->id,
+                    'client_id'       => $this->client_id,
                     'store_id'        => $this->user->store_id,
                     'user_id'         => $this->user->id,
-                    'payment_method'  => $this->paymentMethod,
+                    'payment_method'  => $this->payment_method,
                     'installments'    => $this->installments,
                     'amount'          => $this->total,
-                    'amount_received' => $this->amountReceived,
+                    'amount_received' => $this->amount_received,
                 ]);
 
                 foreach ($this->selectedProducts as $selectedItem) {
@@ -175,23 +192,23 @@ class CreateOrder extends Component
     {
         foreach (range(1, $this->installments) as $installment) {
             $paymentMethodConfig      = $paymentMethodConfigs->where('installments', $installment)->first();
-            $amount                   = $this->amountReceived / $this->installments;
+            $amount                   = $this->amount_received / $this->installments;
             $transactionEffectiveDate = $paymentMethodConfig->transaction_effective_date ?? 0;
 
             FinancialTransaction::create([
-                'client_id'            => $this->client->id,
+                'client_id'            => $this->client_id,
                 'create_by_user_id'    => $this->user->id,
                 'store_id'             => $this->user->store_id,
                 'order_id'             => $orderId,
                 'type'                 => 'receivable',
-                'payment_method'       => $this->paymentMethod,
+                'payment_method'       => $this->payment_method,
                 'amount'               => $amount,
                 'amount_paid'          => $transactionEffectiveDate ? 0 : $amount,
                 'status'               => $transactionEffectiveDate ? 'created' : 'done',
                 'payment_estimate_at'  => now()->addDays($transactionEffectiveDate),
                 'status_changed_at'    => now(),
                 'payment_completed_at' => $transactionEffectiveDate ? null : now(),
-                'description'          => "Valor a receber de R$ {$amount} / R$ {$this->amountReceived} da venda {$orderId} - Parcela {$installment}/{$this->installments}",
+                'description'          => "Valor a receber de R$ {$amount} / R$ {$this->amount_received} da venda {$orderId} - Parcela {$installment}/{$this->installments}",
             ]);
         }
     }
@@ -199,6 +216,11 @@ class CreateOrder extends Component
     public function updatedSearchTerm($term)
     {
         $this->products = [];
+
+        if (strlen($term) == 0) {
+            $this->products = $this->productDefaults;
+            return;
+        }
 
         if (strlen($term) < 3) {
             return;
@@ -220,7 +242,5 @@ class CreateOrder extends Component
                 ->get()
                 ->toArray();
         }
-
-        // $this->products = $this->productDefaults;
     }
 }

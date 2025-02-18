@@ -11,15 +11,15 @@
 
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div class="sm:col-span-2">
-                    <x-input name="clientForm.name" wire:model="clientForm.name" disabled>Nome</x-input>
+                    <x-input name="client_name" wire:model="client_name" disabled>Nome</x-input>
                 </div>
 
                 <div class="sm:col-span-2">
-                    <x-input name="clientForm.document" wire:model="clientForm.document" disabled>Documento</x-input>
+                    <x-input name="client_document" wire:model="client_document" disabled>Documento</x-input>
                 </div>
 
                 <div class="sm:col-span-2">
-                    <x-input name="clientForm.cell_number" wire:model="clientForm.cell_number"
+                    <x-input name="client_cell_number" wire:model="client_cell_number"
                         disabled>Celular</x-input>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                                 <template x-for="(item, index) in @js($products)" :key="index">
                                     <a href="#"
                                         class="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
-                                        @click="$wire.addItem(item); searchTerm = ''; $refs.searchInput.focus();">
+                                        @click="$wire.addProduct(item); searchTerm = ''; $refs.searchInput.focus();">
                                         <span x-text="item.brand.name"></span>
                                         <span x-text="'- ' + item.name"></span>
                                         <span class="ml-2 text-gray-500" x-text="'- R$ ' + item.amount"></span>
@@ -101,14 +101,14 @@
                                                 class="w-20 px-2 py-1 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                 wire:model="selectedProducts.{{ $item['code'] }}.quantity"
                                                 min="1" step="1"
-                                                @change="$wire.calculateTotalItem('{{ $item['code'] }}')" />
+                                                @change="$wire.calculateTotalProduct('{{ $item['code'] }}')" />
                                         </td>
                                         <td class="px-4 py-2 text-sm text-gray-700">
                                             <span class="py-2 text-sm text-gray-800">R$ {{ $item['total'] }}</span>
                                         </td>
                                         <td
                                             class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
-                                            <span @click="$wire.removeItem('{{ $item['code'] }}')"
+                                            <span @click="$wire.removeProduct('{{ $item['code'] }}')"
                                                 class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs hover:bg-red-200 hover:text-red-600 focus:outline-none cursor-pointer">
                                                 Remover
                                             </span>
@@ -138,10 +138,10 @@
 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-2">
-                        <label for="paymentMethod" class="block text-sm/6 font-medium text-gray-900">Método de
+                        <label for="payment_method" class="block text-sm/6 font-medium text-gray-900">Método de
                             Pagamento</label>
                         <div class="mt-2 grid grid-cols-1">
-                            <select required wire:model="paymentMethod" id="paymentMethod" name="paymentMethod"
+                            <select required wire:model="payment_method" id="payment_method" name="payment_method"
                                 class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                 <option value="" disabled selected>Escolha o Método de Pagamento</option>
                                 <option value="cash">Dinheiro</option>
@@ -185,11 +185,11 @@
                     </div>
 
                     <div class="sm:col-span-1">
-                        <label for="discountType" class="block text-sm/6 font-medium text-gray-900">Tipo do
+                        <label for="discount_type" class="block text-sm/6 font-medium text-gray-900">Tipo do
                             Desconto</label>
                         <div class="mt-2 grid grid-cols-1">
-                            <select wire:model="discountType" @change="$wire.calculateAmountReceived()"
-                                id="discountType" name="discountType"
+                            <select wire:model="discount_type" @change="$wire.calculateAmountReceived()"
+                                id="discount_type" name="discount_type"
                                 class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                 <option value="percentage" selected>Porcentagem</option>
                                 <option value="absolute_value">Valor Absoluto</option>
@@ -204,7 +204,7 @@
                     </div>
 
                     <div class="sm:col-span-1">
-                        <x-input name="amountReceived" wire:model.live="amountReceived" type="number"
+                        <x-input name="amount_received" wire:model.live="amount_received" type="number"
                             min="0" step="0.01">Valor Total da Venda</x-input>
                     </div>
 
