@@ -22,20 +22,24 @@ class CreateBrand extends Component
     {
         $this->validate();
 
+        if (!Auth::user()->store_id) {
+            session()->flash('error', 'Erro: Usuário não possui um Store_ID.');
+            return; 
+        }
+
  
         Brand::create([
             'name' => $this->name,
             'store_id'      => Auth::user()->store_id,
         ]);
 
-        session()->flash('message', 'Marca criada com sucesso!');
+        session()->flash('message', 'Marca "' . $this->name . '" criada com sucesso!');
         return redirect()->route('brands.index');
     }
 
 
     public function render()
     {
-
         return view('livewire.brands.create-brand',);
     }
 }

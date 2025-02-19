@@ -2,6 +2,15 @@
 @section('page', 'Criar Nova Marca')
 
 <div>
+
+    @if (session()->has('error'))
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-md">
+            {{ session('error') }} 
+        </div>
+    @endif
+
+
+
     <form wire:submit.prevent="submit" autocomplete="off">
 
         <div class="space-y-12">
@@ -21,6 +30,7 @@
             <button type="submit"
                 class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Salvar
+                
             </button>
         </div>
 

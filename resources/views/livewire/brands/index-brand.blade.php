@@ -3,6 +3,18 @@
 
 <div>
 
+    @if (session()->has('message'))
+        <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-md">
+            {{ session('message') }}
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-md">
+            {{ session('error') }} 
+        </div>
+    @endif
+
     <div class="sm:col-span-6">
         <div class="overflow-x-auto">
 
