@@ -11,14 +11,14 @@ use App\Models\ProductTransaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class CreateOrder extends Component
 {
     public User $user;
 
-    # request client 
+    # request client
     #[Validate('required|string|numeric')]
     public string $client_id;
 
@@ -60,14 +60,13 @@ class CreateOrder extends Component
 
     public string $searchTerm = '';
 
-
     public function mount(Client $client)
     {
         $this->user = Auth::user();
 
-        $this->client_id = $client->id;
-        $this->client_name = $client->name;
-        $this->client_document = $client->document;
+        $this->client_id          = $client->id;
+        $this->client_name        = $client->name;
+        $this->client_document    = $client->document;
         $this->client_cell_number = $client->cell_number;
 
         $this->productDefaults = Product::searchByName($this->user->store_id)
@@ -219,6 +218,7 @@ class CreateOrder extends Component
 
         if (strlen($term) == 0) {
             $this->products = $this->productDefaults;
+
             return;
         }
 

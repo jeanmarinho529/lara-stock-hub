@@ -1,36 +1,37 @@
 <?php
+
 namespace App\Livewire\Brands;
 
-use Livewire\Component;
 use App\Models\Brand;
-use App\Models\Store;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class UpdateBrand extends Component
 {
-    public $brand;
-    public $name;
-    public function mount($id)
+    public Brand $brand;
+
+    #[Validate('required|string|min:3')]
+    public string $name;
+
+    public function mount(string $id)
     {
-        
-        $this->brand = Brand::findOrFail($id);
+        $user = Auth::user();
+        $this->brand = Brand::where('store_id', $user->store_id)->findOrFail($id);
         $this->name = $this->brand->name;
-        
     }
 
-    public function submit()
+    public function save()
     {
-        $this->validate([
-            'name' => 'required|min:3',
-        ]);
+        $this->validate();
 
         $this->brand->update([
             'name' => $this->name,
         ]);
 
         session()->flash('message', 'Marca atualizada com sucesso!');
-        
 
-        return redirect()->route('brands.index');
+        redirect()->route('brands.index');
     }
 
     public function render()

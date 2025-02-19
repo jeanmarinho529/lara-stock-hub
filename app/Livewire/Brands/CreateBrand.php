@@ -2,44 +2,30 @@
 
 namespace App\Livewire\Brands;
 
-use Livewire\Component;
+use App\Models\Brand;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
-use App\Models\Brand;
-use App\Models\Store; 
+use Livewire\Component;
 
 class CreateBrand extends Component
 {
-    public $name;
-
-
-    protected $rules = [
-        'name' => 'required|min:3',
-    ];
-
+    #[Validate('required|string|min:4')]
+    public string $name;
 
     public function submit()
-    {
-        $this->validate();
-
-        if (!Auth::user()->store_id) {
-            session()->flash('error', 'Erro: Usuário não possui um Store_ID.');
-            return; 
-        }
-
- 
+    {      
         Brand::create([
-            'name' => $this->name,
-            'store_id'      => Auth::user()->store_id,
+            'name'     => $this->name,
+            'store_id' => Auth::user()->store_id,
         ]);
 
         session()->flash('message', 'Marca "' . $this->name . '" criada com sucesso!');
+
         return redirect()->route('brands.index');
     }
 
-
     public function render()
     {
-        return view('livewire.brands.create-brand',);
+        return view('livewire.brands.create-brand');
     }
 }

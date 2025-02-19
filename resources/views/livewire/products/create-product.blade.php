@@ -1,5 +1,5 @@
-@section('title', 'Editar Cliente')
-@section('page', 'Editar Cliente')
+@section('title', 'Novo Produto')
+@section('page', 'Novo Produto')
 
 <div>
     <form wire:submit="save" autocomplete="off">
@@ -7,8 +7,8 @@
         <div class="space-y-12">
 
             <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base/7 font-semibold text-gray-900">Novo do Cliente</h2>
-                <p class="text-sm/6 text-gray-600">Insira os Dados do Novo Cliente.</p>
+                <h2 class="text-base/7 font-semibold text-gray-900">Novo Produto</h2>
+                <p class="text-sm/6 text-gray-600">Insira os dados do novo Produto.</p>
 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
@@ -18,7 +18,7 @@
 
                     <div class="sm:col-span-2">
                         <x-input is_required name="document" wire:model="document"
-                            x-mask:dynamic="documentMask">Documento</x-input>
+                            x-mask:dynamic="documentMask">Código</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
@@ -47,8 +47,8 @@
                             <select required wire:model="type" id="type" name="type"
                                 class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                                 <option value="" disabled selected>Selecione o Tipo</option>
-                                <option value="client">Cliente</option>
-                                <option value="supplier">Fornecedor</option>
+                                <option value="product">Produto</option>
+                                <option value="service">Seriviço</option>
                             </select>
                             <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                                 viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
@@ -71,9 +71,9 @@
                             <select is_required wire:model="cell_number_is_whatsapp" id="cell_number_is_whatsapp"
                                 name="cell_number_is_whatsapp"
                                 class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                <option value="" disabled selected>Celular é Whatsapp</option>
-                                <option value="1">Sim</option>
-                                <option value="0">Não</option>
+                                <option value="" disabled selected>Tipo</option>
+                                <option >Produto</option>
+                                <option >Serviços</option>
                             </select>
                             <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                                 viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
@@ -83,16 +83,6 @@
                             </svg>
                         </div>
                     </div>
-
-                    <div class="sm:col-span-2">
-                        <x-input name="phone_number" wire:model="phone_number"
-                            x-mask:dynamic="numberMask">Telefone</x-input>
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <x-input name="email" wire:model="email" type="email">E-mail</x-input>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -107,22 +97,4 @@
 
     </form>
 
-
-
-    <script>
-        function documentMask(input) {
-            return input.length <= 14 ?
-                '999.999.999-99' :
-                '99.999.999/9999-99'
-        }
-
-        function numberMask(input) {
-            console.log(input.length)
-            return input.length <= 14 ?
-                '(99) 9999-9999' :
-                '(99) 99999-9999'
-        }
-    </script>
-
 </div>
-

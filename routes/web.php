@@ -1,14 +1,16 @@
 <?php
 
+use App\Livewire\Brands\CreateBrand;
+use App\Livewire\Brands\IndexBrand;
+use App\Livewire\Brands\UpdateBrand;
 use App\Livewire\Clients\CreateClient;
 use App\Livewire\Clients\IndexClient;
 use App\Livewire\Clients\UpdateClient;
 use App\Livewire\Orders\CreateOrder;
 use App\Livewire\Orders\IndexOrder;
 use App\Livewire\Orders\ShowOrder;
-use App\Livewire\Brands\IndexBrand;
-use App\Livewire\Brands\UpdateBrand;
-use App\Livewire\Brands\CreateBrand;
+use App\Livewire\Products\CreateProduct;
+use App\Livewire\Products\IndexProduct;
 use App\Livewire\Transactions\DashboardTransaction;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +33,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('financeiros/dashboard', DashboardTransaction::class)
         ->name('financial.dashboard');
+
+    Route::get('Produtos/Criar', CreateProduct::class)
+        ->name('products.create');
+
+    Route::get('Produtos', IndexProduct::class)
+        ->name('products.index');
 
     Route::get('marcas', IndexBrand::class)
         ->name('brands.index');

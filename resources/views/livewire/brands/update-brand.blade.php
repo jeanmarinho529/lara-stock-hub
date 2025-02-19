@@ -2,7 +2,7 @@
 @section('page', 'Editar Marca')
 
 <div>
-    <form wire:submit.prevent="submit" autocomplete="off">
+    <form wire:submit.prevent="save" autocomplete="off">
 
         <div class="space-y-12">
 
@@ -13,7 +13,7 @@
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
                     
-                    <div class="sm:col-span-2">
+                    <div class="sm:col-span-8">
                         <x-input placeholder="Novo nome" is_required name="name" wire:model="name">Nome da Marca</x-input>
                     </div>
         <div class="mt-8 flex items-center justify-end gap-x-6">
