@@ -6,6 +6,9 @@ use App\Livewire\Clients\UpdateClient;
 use App\Livewire\Orders\CreateOrder;
 use App\Livewire\Orders\IndexOrder;
 use App\Livewire\Orders\ShowOrder;
+use App\Livewire\Brands\IndexBrand;
+use App\Livewire\Brands\UpdateBrand;
+use App\Livewire\Brands\CreateBrand;
 use App\Livewire\Transactions\DashboardTransaction;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +31,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('financeiros/dashboard', DashboardTransaction::class)
         ->name('financial.dashboard');
+
+    Route::get('/brands', IndexBrand::class)
+        ->name('brands.index');
+    Route::get('/brands/create', CreateBrand::class)
+        ->name('brands.create');
+    Route::get('/brands/{id}/edit', UpdateBrand::class)
+        ->name('brands.edit');
 
     Route::get('clientes', IndexClient::class)
         ->name('clients.index');
