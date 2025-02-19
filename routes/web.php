@@ -32,11 +32,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('financeiros/dashboard', DashboardTransaction::class)
         ->name('financial.dashboard');
 
-    Route::get('/brands', IndexBrand::class)
+    Route::get('marcas', IndexBrand::class)
         ->name('brands.index');
-    Route::get('/brands/create', CreateBrand::class)
+    Route::get('marcas/criar', CreateBrand::class)
         ->name('brands.create');
-    Route::get('/brands/{id}/edit', UpdateBrand::class)
+    Route::get('marcas/{id}/editar', UpdateBrand::class)
         ->name('brands.edit');
 
     Route::get('clientes', IndexClient::class)
