@@ -9,14 +9,12 @@ class UpdateBrand extends Component
 {
     public $brand;
     public $name;
-    public $store_id;
-    public $stores;
-
     public function mount($id)
     {
         
         $this->brand = Brand::findOrFail($id);
         $this->name = $this->brand->name;
+        
     }
 
     public function submit()
