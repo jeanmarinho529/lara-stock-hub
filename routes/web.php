@@ -34,10 +34,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('financeiros/dashboard', DashboardTransaction::class)
         ->name('financial.dashboard');
 
-    Route::get('Produtos/Criar', CreateProduct::class)
+    Route::get('produtos/criar', CreateProduct::class)
         ->name('products.create');
 
-    Route::get('Produtos', IndexProduct::class)
+    Route::get('produtos', IndexProduct::class)
         ->name('products.index');
 
     Route::get('marcas', IndexBrand::class)

@@ -13,7 +13,7 @@ class CreateBrand extends Component
     public string $name;
 
     public function submit()
-    {      
+    {
         Brand::create([
             'name'     => $this->name,
             'store_id' => Auth::user()->store_id,

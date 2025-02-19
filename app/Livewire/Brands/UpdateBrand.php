@@ -16,9 +16,9 @@ class UpdateBrand extends Component
 
     public function mount(string $id)
     {
-        $user = Auth::user();
+        $user        = Auth::user();
         $this->brand = Brand::where('store_id', $user->store_id)->findOrFail($id);
-        $this->name = $this->brand->name;
+        $this->name  = $this->brand->name;
     }
 
     public function save()
