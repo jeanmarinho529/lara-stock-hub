@@ -6,9 +6,12 @@ use App\Models\Brand;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class IndexBrand extends Component
 {
+    use WithPagination;
+
     public User $user;
 
     public string $filter = "";

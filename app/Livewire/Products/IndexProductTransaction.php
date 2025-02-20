@@ -8,9 +8,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class IndexProductTransaction extends Component
 {
+    use WithPagination;
+
     public User $user;
 
     public ?string $productId = null;
