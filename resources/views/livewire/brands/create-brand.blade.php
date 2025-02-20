@@ -2,6 +2,7 @@
 @section('page', 'Criar Nova Marca')
 
 <div>
+    <x-alert></x-alert>
     <form wire:submit.prevent="save" autocomplete="off">
 
         <div class="space-y-12">

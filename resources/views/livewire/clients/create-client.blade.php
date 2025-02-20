@@ -2,6 +2,7 @@
 @section('page', 'Novo Cliente')
 
 <div>
+    <x-alert></x-alert>
     <form wire:submit="save" autocomplete="off">
 
         <div class="space-y-12">
