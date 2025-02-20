@@ -51,7 +51,16 @@
                             <td class="px-4 py-2 text-sm text-gray-700">
                                 {{ $product['product_transactions_sum_quantity'] ?? 0 }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $product['amount'] }}</td>
-                            <td class="px-4 py-2 text-sm text-gray-700"></td>
+                            <td class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
+                                <a href="{{ route('products.update', $product['id']) }}"
+                                    class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs hover:bg-blue-200 hover:blue-blue-600 focus:outline-none cursor-pointer">
+                                    Editar
+                                </a>
+                                <a href="{{ route('products.transactions', $product['id']) }}"
+                                    class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs hover:bg-green-200 hover:green-green-600 focus:outline-none cursor-pointer">
+                                    Movimentações
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

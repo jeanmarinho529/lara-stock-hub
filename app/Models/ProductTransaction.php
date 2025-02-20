@@ -20,6 +20,18 @@ class ProductTransaction extends Model
         'amount_received',
     ];
 
+    public function getDisplayTypeAttribute()
+    {
+        $types = [
+            'added'       => 'Adicionado',
+            'removed'     => 'Removido',
+            'transferred' => 'Transferido',
+            'sold'        => 'Vendido',
+        ];
+
+        return $types[$this->type];
+    }
+
     public function getDisplayLocalAttribute()
     {
         $types = [
@@ -31,8 +43,22 @@ class ProductTransaction extends Model
         return $types[$this->local];
     }
 
+    public function getDisplayCreatedAtAttribute()
+    {
+        if (is_null($this->created_at)) {
+            return null;
+        }
+
+        return $this->created_at->format('d/m/y H:i:s');
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
