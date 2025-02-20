@@ -53,7 +53,7 @@ class CreateProduct extends Component
                 'store_id'         => $this->user->store_id,
                 'user_id'          => $this->user->id,
                 'name'             => $this->name,
-                'code'             => $this->code,
+                'code'             => trim($this->code),
                 'type'             => $this->type,
                 'amount'           => $this->amount,
                 'minimum_quantity' => $this->minimum_quantity,
