@@ -35,14 +35,14 @@
 
                 <div class="sm:col-span-1">
                     <x-select name="sort" label="Ordem" wire:model.live="sort">
-                        <option value="" selected>Ordem</option>
+                        <option value="desc" selected>Ordem</option>
                         <option value="desc">Recentes</option>
                         <option value="asc">antigas</option>
                     </x-select>
                 </div>
 
                 <div class="sm:mt-9 sm:col-span-2">
-                    <a href="{{ route('products.transactions.create') }}"
+                    <a href="{{ route('products.transactions.create', $clientDefaultId) }}"
                         class="rounded-md bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Criar Movimentação
                     </a>

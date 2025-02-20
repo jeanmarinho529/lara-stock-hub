@@ -74,7 +74,8 @@ class IndexProductTransaction extends Component
                         ->orWhere('code', 'like', "%$this->filter%");
                 });
             })
-            ->orderBy('created_at', $this->sort)
+            ->where('store_id', $this->user->store_id)
+            ->orderBy('id', $this->sort)
             ->paginate(10);
 
         return view('livewire.products.index-product-transaction', [

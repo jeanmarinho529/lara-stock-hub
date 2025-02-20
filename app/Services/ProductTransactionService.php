@@ -35,6 +35,7 @@ class ProductTransactionService
 
             ProductTransaction::create([
                 'product_id' => $productId,
+                'store_id'   => $user->store_id,
                 'order_id'   => $orderId,
                 'user_id'    => $user->id,
                 'quantity'   => $this->quantity($type, $quantity),
