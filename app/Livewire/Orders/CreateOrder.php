@@ -161,8 +161,8 @@ class CreateOrder extends Component
                     'user_id'         => $this->user->id,
                     'payment_method'  => $this->payment_method,
                     'installments'    => $this->installments,
-                    'amount'          => $this->total,
-                    'amount_received' => $this->amount_received,
+                    'amount'          => round($this->total, 2),
+                    'amount_received' => round($this->amount_received, 2),
                 ]);
 
                 foreach ($this->selectedProducts as $selectedItem) {
@@ -203,8 +203,8 @@ class CreateOrder extends Component
                 'order_id'             => $orderId,
                 'type'                 => 'receivable',
                 'payment_method'       => $this->payment_method,
-                'amount'               => $amount,
-                'amount_paid'          => $transactionEffectiveDate ? 0 : $amount,
+                'amount'               => round($amount, 2),
+                'amount_paid'          => round($transactionEffectiveDate ? 0 : $amount, 2),
                 'status'               => $transactionEffectiveDate ? 'created' : 'done',
                 'payment_estimate_at'  => now()->addDays($transactionEffectiveDate),
                 'status_changed_at'    => now(),
