@@ -33,7 +33,7 @@ return new class () extends Migration
             $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->unique(['brand_id', 'store_id', 'code'], 'unq_products');
+            $table->unique(['store_id', 'code'], 'unq_products');
         });
     }
 
