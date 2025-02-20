@@ -49,7 +49,7 @@ class CreateProductTransaction extends Component
     {
         $this->user = Auth::user();
 
-        $this->productDefaults = Product::searchByName($this->user->store_id)
+        $this->productDefaults = Product::where('type', 'product')->searchByName($this->user->store_id)
             ->limit(10)
             ->get()
             ->toArray();
@@ -166,7 +166,7 @@ class CreateProductTransaction extends Component
             return;
         }
 
-        $this->products = Product::searchByCode($this->user->store_id, $term)
+        $this->products = Product::where('type', 'product')->searchByCode($this->user->store_id, $term)
             ->limit(1)
             ->get()
             ->toArray();
@@ -177,7 +177,7 @@ class CreateProductTransaction extends Component
         }
 
         if (count($this->products) == 0) {
-            $this->products = Product::searchByName($this->user->store_id, $term)
+            $this->products = Product::where('type', 'product')->searchByName($this->user->store_id, $term)
                 ->limit(10)
                 ->get()
                 ->toArray();
