@@ -12,16 +12,17 @@ class CreateBrand extends Component
     #[Validate('required|string|min:4')]
     public string $name;
 
-    public function submit()
+    public function save()
     {
+        $this->validate();
+
         Brand::create([
             'name'     => $this->name,
             'store_id' => Auth::user()->store_id,
         ]);
 
-        session()->flash('message', 'Marca "' . $this->name . '" criada com sucesso!');
-
-        return redirect()->route('brands.index');
+        session()->flash('success', 'Marca cadastrada com sucesso.');
+        redirect()->route('brands.index');
     }
 
     public function render()
