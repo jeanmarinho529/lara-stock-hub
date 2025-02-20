@@ -21,10 +21,10 @@ class CreateClient extends Component
     #[Validate('required|string|in:client,supplier')]
     public string $type = 'client';
 
-    #[Validate('email')]
+    #[Validate('nullable|email')]
     public ?string $email;
 
-    #[Validate('string|min:11')]
+    #[Validate('nullable|string|min:11')]
     public ?string $phone_number;
 
     #[Validate('required|string|min:11')]

@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="sm:mt-9 sm:col-span-2">
-                    <a href="{{ route('products.transactions.create', $clientDefaultId) }}"
+                    <a href="{{ route('products.transactions.create') }}"
                         class="rounded-md bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Criar Movimentação
                     </a>

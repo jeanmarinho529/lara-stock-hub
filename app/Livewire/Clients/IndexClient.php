@@ -39,7 +39,7 @@ class IndexClient extends Component
                     ->orWhere('cell_number', 'like', "%$this->filter%");
             })
             ->orderBy('id', 'desc')
-            ->paginate(1);
+            ->paginate(10);
 
         return view('livewire.clients.index-client', [
             'clients' => $clients,
