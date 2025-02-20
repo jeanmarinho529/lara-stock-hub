@@ -38,6 +38,7 @@ class IndexClient extends Component
                     ->orWhere('email', 'like', "%$this->filter%")
                     ->orWhere('cell_number', 'like', "%$this->filter%");
             })
+            ->orderBy('id', 'desc')
             ->paginate(1);
 
         return view('livewire.clients.index-client', [

@@ -54,7 +54,7 @@
 
                     <div class="sm:col-span-6">
                         <x-select name="brand_id" wire:model="brand_id" is_required label="Marca do Produto">
-                            <option value="null" disabled selected>Selecione a Marca</option>
+                            <option value="null" selected>Selecione a Marca</option>
                             @foreach ($brands as $brand)
                                 <option value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
                             @endforeach
