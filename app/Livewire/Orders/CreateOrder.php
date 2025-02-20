@@ -7,8 +7,8 @@ use App\Models\FinancialTransaction;
 use App\Models\Order;
 use App\Models\PaymentMethodConfig;
 use App\Models\Product;
-use App\Models\ProductTransaction;
 use App\Models\User;
+use App\Services\ProductTransactionService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -166,15 +166,17 @@ class CreateOrder extends Component
                 ]);
 
                 foreach ($this->selectedProducts as $selectedItem) {
-                    ProductTransaction::create([
-                        'product_id' => $selectedItem['id'],
-                        'order_id'   => $order->id,
-                        'user_id'    => $this->user->id,
-                        'quantity'   => $selectedItem['quantity'],
-                        'type'       => 'sold',
-                        'local'      => 'stock',
-                        'amount'     => $selectedItem['amount'],
-                    ]);
+                    $service = new ProductTransactionService();
+                    $service->createProductTransaction(
+                        $selectedItem['id'],
+                        $selectedItem['quantity'],
+                        'sold',
+                        'store',
+                        $selectedItem['amount'],
+                        $order->id,
+                        null,
+                        $this->user
+                    );
                 }
 
                 $this->createTransaction($paymentMethodConfigs, $order->id);

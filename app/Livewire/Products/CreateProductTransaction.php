@@ -5,8 +5,8 @@ namespace App\Livewire\Products;
 use App\Models\Product;
 use App\Models\ProductTransaction;
 use App\Models\User;
+use App\Services\ProductTransactionService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -84,40 +84,22 @@ class CreateProductTransaction extends Component
             }
         }
 
-        try {
-            $this->validate();
-
-            DB::transaction(function () {
-                $this->createProductTransaction($this->type);
-
-                if ($this->type == 'transferred') {
-                    $this->createProductTransaction('added');
-                }
-
-                session()->flash('success', 'Movimentação realizada com sucesso.');
-            }, 5);
-        } catch (\Exception $e) {
-            session()->flash('error', $e->getMessage());
-        }
+        $this->createProductTransaction($this->type);
     }
 
     public function createProductTransaction(string $type)
     {
-        $quantity = $this->quantity;
-
-        if (in_array($type, ['removed', 'transferred'])) {
-            $quantity = $this->quantity * -1;
-        }
-
-        ProductTransaction::create([
-            'product_id' => $this->productId,
-            'order_id'   => null,
-            'user_id'    => $this->user->id,
-            'quantity'   => $quantity,
-            'type'       => $type,
-            'local'      => $this->local,
-            'amount'     => 0,
-        ]);
+        $service = new ProductTransactionService();
+        $service->createProductTransaction(
+            $this->productId,
+            $this->quantity,
+            $this->type,
+            $this->local,
+            0,
+            null,
+            $this->local_transfer,
+            $this->user
+        );
 
         $types = [
             'added'       => 'Adicionado',
@@ -128,7 +110,7 @@ class CreateProductTransaction extends Component
         $this->productTransactions[] = [
             'display_created_at' => now()->format('d/m/y H:i:s'),
             'display_type'       => $types[$type],
-            'quantity'           => $quantity,
+            'quantity'           => $this->quantity,
             'user'               => [
                 'name' => $this->user->name,
             ],

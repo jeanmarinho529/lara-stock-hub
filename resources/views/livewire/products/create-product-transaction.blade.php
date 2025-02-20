@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-input is_required type="number" min="0" step="0.01" name="quantity"
+                        <x-input is_required type="number" min="0" step="1" name="quantity"
                             wire:model="quantity">Quantidade</x-input>
                     </div>
 
