@@ -3,6 +3,7 @@
 namespace App\Livewire\Clients;
 
 use App\Models\Client;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -37,14 +38,22 @@ class CreateClient extends Component
     {
         $this->validate();
 
-        $client = Client::firstOrCreate(
-            [
-                'store_id'      => Auth::user()->store_id,
-                'document'      => $this->document,
-                'document_type' => $this->document_type,
-            ],
-            $this->except('document', 'document_type')
-        );
+        try {
+            $client = Client::create(
+                array_merge(
+                    ['store_id' => Auth::user()->store_id],
+                    $this->all()
+                ),
+            );
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                session()->flash('waring', 'Documento do cliente já cadastrado!');
+
+                return;
+            }
+
+            throw $e;
+        }
 
         redirect()->route('orders.create', ['client' => $client]);
     }

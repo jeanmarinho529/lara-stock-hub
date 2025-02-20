@@ -3,6 +3,7 @@
 namespace App\Livewire\Brands;
 
 use App\Models\Brand;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -16,10 +17,20 @@ class CreateBrand extends Component
     {
         $this->validate();
 
-        Brand::create([
-            'name'     => $this->name,
-            'store_id' => Auth::user()->store_id,
-        ]);
+        try {
+            Brand::create([
+                'name'     => trim($this->name),
+                'store_id' => Auth::user()->store_id,
+            ]);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                session()->flash('waring', 'Marca já cadastrado, insira outro nome!');
+
+                return;
+            }
+
+            throw $e;
+        }
 
         session()->flash('success', 'Marca cadastrada com sucesso.');
         redirect()->route('brands.index');
