@@ -39,8 +39,10 @@ class IndexProduct extends Component
                 return $query->where('type', $this->type);
             })
             ->when($this->filter, function ($query) {
-                return $query->where('name', 'like', "%$this->filter%")
-                    ->orWhere('code', 'like', "%$this->filter%");
+                return $query->where(function ($q) {
+                    $q->where('name', 'like', "%{$this->filter}%")
+                        ->orWhere('code', 'like', "%{$this->filter}%");
+                });
             })
             ->with('brand:id,name')
             ->withSum('productTransactions', 'quantity')
