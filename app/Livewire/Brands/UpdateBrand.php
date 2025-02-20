@@ -11,7 +11,7 @@ class UpdateBrand extends Component
 {
     public Brand $brand;
 
-    #[Validate('required|string|min:3')]
+    #[Validate('required|string|min:4')]
     public string $name;
 
     public function mount(string $id)
@@ -29,8 +29,7 @@ class UpdateBrand extends Component
             'name' => $this->name,
         ]);
 
-        session()->flash('message', 'Marca atualizada com sucesso!');
-
+        session()->flash('success', 'Marca atualizada com sucesso!');
         redirect()->route('brands.index');
     }
 
