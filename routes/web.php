@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\UserIsAdmin;
 use App\Livewire\Brands\CreateBrand;
 use App\Livewire\Brands\IndexBrand;
 use App\Livewire\Brands\UpdateBrand;
@@ -35,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('orders.create');
 
     Route::get('financeiros/dashboard', DashboardTransaction::class)
-        ->name('financial.dashboard');
+        ->name('financial.dashboard')->middleware(UserIsAdmin::class);
 
     Route::get('produtos', IndexProduct::class)
         ->name('products.index');
