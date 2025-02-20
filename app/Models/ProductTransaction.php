@@ -34,13 +34,13 @@ class ProductTransaction extends Model
 
     public function getDisplayLocalAttribute()
     {
-        $types = [
+        $locals = [
             'store'  => 'Loja',
             'stock'  => 'Estoque',
             'others' => 'Outros',
         ];
 
-        return $types[$this->local];
+        return $locals[$this->local];
     }
 
     public function getDisplayCreatedAtAttribute()

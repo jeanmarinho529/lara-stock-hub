@@ -69,13 +69,13 @@ class FinancialTransaction extends Model
 
     public function getDisplayStatusAttribute()
     {
-        $methods = [
+        $status = [
             'created'  => 'Criado',
             'done'     => 'Concluído',
             'partial'  => 'Parcial',
             'canceled' => 'Cancelado',
         ];
 
-        return $methods[$this->status];
+        return $status[$this->status];
     }
 }

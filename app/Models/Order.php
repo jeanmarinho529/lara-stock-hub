@@ -28,7 +28,7 @@ class Order extends Model
 
     public function getDisplayPaymentMethodAttribute()
     {
-        $methods = [
+        $paymentMethods = [
             'credit_card'   => 'Cartão de Crédito',
             'bank_transfer' => 'Transferência Bancária',
             'pix'           => 'PIX',
@@ -36,7 +36,7 @@ class Order extends Model
             'cash'          => 'Dinheiro',
         ];
 
-        return $methods[$this->payment_method];
+        return $paymentMethods[$this->payment_method];
     }
 
     public function client()
