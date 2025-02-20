@@ -41,8 +41,8 @@ class CreateOrder extends Component
     #[Validate('required|integer|min:1')]
     public int $installments = 1;
 
-    #[Validate('required|numeric|min:0')]
-    public float $discount = 0;
+    #[Validate('nullable|numeric|min:0')]
+    public ?float $discount = 0;
 
     #[Validate('required|string|in:percentage,absolute_value')]
     public string $discount_type = 'percentage';
@@ -123,6 +123,8 @@ class CreateOrder extends Component
 
     public function calculateAmountReceived(): void
     {
+        $this->discount = $this->discount ?? 0;
+
         if ($this->discount_type == 'percentage' and $this->discount > 0) {
             $this->amount_received = $this->total * (1 - $this->discount / 100);
         } else {

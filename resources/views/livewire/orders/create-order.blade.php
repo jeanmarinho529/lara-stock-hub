@@ -91,9 +91,9 @@
                             </thead>
                             <tbody class="bg-white">
                                 @foreach ($selectedProducts as $item)
-                                    <tr class="border-b">
-                                        <td class="px-4 py-2 text-sm text-gray-700">{{ $item['code'] }}</td>
-                                        <td class="px-4 py-2 text-sm text-gray-700">{{ $item['brand']['name'] }} -
+                                <tr class="border-b" wire:key="product-{{ $item['code'] }}">
+                                    <td class="px-4 py-2 text-sm text-gray-700">{{ $item['code'] }}</td>
+                                        <td class="px-4 py-2 text-sm text-gray-700">{{ $item['brand']['name'] ?? '' }} -
                                             {{ $item['name'] }}</td>
                                         <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $item['amount'] }}</td>
                                         <td class="px-4 py-2 text-sm text-gray-700">
@@ -104,7 +104,8 @@
                                                 @change="$wire.calculateTotalProduct('{{ $item['code'] }}')" />
                                         </td>
                                         <td class="px-4 py-2 text-sm text-gray-700">
-                                            <span class="py-2 text-sm text-gray-800">R$ {{ $item['total'] }}</span>
+                                            <span class="py-2 text-sm text-gray-800">R$
+                                                {{ $item['total'] }}</span>
                                         </td>
                                         <td
                                             class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
