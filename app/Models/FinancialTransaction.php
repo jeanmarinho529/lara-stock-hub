@@ -33,7 +33,7 @@ class FinancialTransaction extends Model
             return null;
         }
 
-        return Carbon::parse($this->payment_estimate_at)->timezone('America/Sao_Paulo')->format('d/m/y');
+        return $this->payment_estimate_at->format('d/m/y');
     }
 
     public function getDisplayPaymentCompletedAtAttribute()
@@ -42,7 +42,7 @@ class FinancialTransaction extends Model
             return null;
         }
 
-        return Carbon::parse($this->payment_completed_at)->timezone('America/Sao_Paulo')->format('d/m/y');
+        return $this->payment_completed_at->format('d/m/y');
     }
 
     public function getDisplayStatusChangedAtAttribute()
@@ -51,7 +51,7 @@ class FinancialTransaction extends Model
             return null;
         }
 
-        return Carbon::parse($this->status_changed_at)->timezone('America/Sao_Paulo')->format('d/m/y H:i');
+        return $this->status_changed_at->format('d/m/y H:i');
     }
 
     public function getDisplayPaymentMethodAttribute()

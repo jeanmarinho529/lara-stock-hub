@@ -23,7 +23,7 @@ class Order extends Model
 
     public function getDisplayCreatedAtAttribute()
     {
-        return Carbon::parse($this->created_at)->timezone('America/Sao_Paulo')->format('d/m/y H:i');
+        return $this->created_at->format('d/m/y H:i');
     }
 
     public function getDisplayPaymentMethodAttribute()
