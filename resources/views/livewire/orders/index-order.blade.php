@@ -4,6 +4,39 @@
 <div>
     <div class="sm:col-span-6">
         <div class="overflow-x-auto">
+
+            <div class="mb-10 grid grid-cols-1 sm:grid-cols-10 gap-x-6 gap-y-8">
+                <div class="sm:col-span-3">
+                    <x-input type="date" name="date" wire:model.live="date">Filtro Data</x-input>
+                </div>
+
+                <div class="sm:col-span-3">
+                    <x-select name="payment_method" label="Tipo de Pagamento" wire:model.live="payment_method">
+                        <option value="" selected>Filtre por Tipo de Pagamento</option>
+                        <option value="credit_card">Cartão de Crédito</option>
+                        <option value="pix">PIX</option>
+                        <option value="cash">Dinheiro</option>
+                        <option value="bank_transfer">Transferência Bancária</option>
+                        <option value="bank_slip">Boleto</option>
+                    </x-select>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <x-select name="sort" label="Ordem" wire:model.live="sort">
+                        <option value="desc" selected>Ordem</option>
+                        <option value="desc">Recentes</option>
+                        <option value="asc">Antigas</option>
+                    </x-select>
+                </div>
+
+                <div class="sm:mt-9 sm:col-span-2">
+                    <a href="{{ route('orders.create', $clientDefaultId) }}"
+                        class="rounded-md bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Venda Avulsa
+                    </a>
+                </div>
+            </div>
+
             <table class="min-w-full table-auto">
                 <thead class="bg-gray-100">
                     <tr>

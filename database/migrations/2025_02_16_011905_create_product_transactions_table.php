@@ -15,6 +15,7 @@ return new class () extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('order_id')->nullable();
+            $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('user_id');
             $table->integer('quantity');
             $table->enum('type', ['added', 'removed', 'transferred', 'sold']);
@@ -25,6 +26,7 @@ return new class () extends Migration
 
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('store_id')->references('id')->on('stores');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

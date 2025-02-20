@@ -22,9 +22,14 @@ class Product extends Model
         'description',
     ];
 
-    public function brand()
+    public function getDisplayTypeAttribute()
     {
-        return $this->belongsTo(Brand::class);
+        $types = [
+            'product' => 'Produto',
+            'service' => 'Serviço',
+        ];
+
+        return $types[$this->type];
     }
 
     public function scopeSearchByCode($query, string $storeId, string $code)
@@ -43,5 +48,15 @@ class Product extends Model
             ->when($name, function ($query) use ($name) {
                 return $query->where('name', 'like', "%$name%");
             });
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function productTransactions()
+    {
+        return $this->hasMany(ProductTransaction::class);
     }
 }

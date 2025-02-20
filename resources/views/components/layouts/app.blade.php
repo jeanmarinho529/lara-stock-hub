@@ -32,7 +32,9 @@
                             <div class="ml-10 flex items-baseline space-x-4">
                                 <a href="{{ route('orders.index') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Vendas</a>
                                 <a href="{{ route('clients.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Clientes</a>
-                                <a href="{{ route('orders.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Produtos</a>
+                                <a href="{{ route('products.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Produtos</a>
+                                <a href="{{ route('products.transactions.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Movimentações</a>
+                                <a href="{{ route('brands.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Marcas</a>
                                 <a href="{{ route('financial.dashboard') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Financeiro</a>
                                 <a href="{{ route('orders.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
                             </div>
@@ -89,6 +91,8 @@
                     <a href="{{ route('orders.index') }}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Vendas</a>
                     <a href="{{ route('clients.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Clientes</a>
                     <a href="{{ route('orders.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Produtos</a>
+                    <a href="{{ route('products.transactions.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Movimentações</a>
+                    <a href="{{ route('brands.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Marcas</a>
                     <a href="{{ route('financial.dashboard') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Financeiro</a>
                     <a href="{{ route('orders.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
                 </div>

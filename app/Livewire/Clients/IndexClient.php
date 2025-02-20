@@ -6,9 +6,12 @@ use App\Models\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class IndexClient extends Component
 {
+    use WithPagination;
+
     public User $user;
 
     public string $filter = "";
@@ -35,7 +38,8 @@ class IndexClient extends Component
                     ->orWhere('email', 'like', "%$this->filter%")
                     ->orWhere('cell_number', 'like', "%$this->filter%");
             })
-            ->paginate(10);
+            ->orderBy('id', 'desc')
+            ->paginate(1);
 
         return view('livewire.clients.index-client', [
             'clients' => $clients,

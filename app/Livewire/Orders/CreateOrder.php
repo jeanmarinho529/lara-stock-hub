@@ -7,18 +7,18 @@ use App\Models\FinancialTransaction;
 use App\Models\Order;
 use App\Models\PaymentMethodConfig;
 use App\Models\Product;
-use App\Models\ProductTransaction;
 use App\Models\User;
+use App\Services\ProductTransactionService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class CreateOrder extends Component
 {
     public User $user;
 
-    # request client 
+    # request client
     #[Validate('required|string|numeric')]
     public string $client_id;
 
@@ -60,14 +60,13 @@ class CreateOrder extends Component
 
     public string $searchTerm = '';
 
-
     public function mount(Client $client)
     {
         $this->user = Auth::user();
 
-        $this->client_id = $client->id;
-        $this->client_name = $client->name;
-        $this->client_document = $client->document;
+        $this->client_id          = $client->id;
+        $this->client_name        = $client->name;
+        $this->client_document    = $client->document;
         $this->client_cell_number = $client->cell_number;
 
         $this->productDefaults = Product::searchByName($this->user->store_id)
@@ -162,20 +161,22 @@ class CreateOrder extends Component
                     'user_id'         => $this->user->id,
                     'payment_method'  => $this->payment_method,
                     'installments'    => $this->installments,
-                    'amount'          => $this->total,
-                    'amount_received' => $this->amount_received,
+                    'amount'          => round($this->total, 2),
+                    'amount_received' => round($this->amount_received, 2),
                 ]);
 
                 foreach ($this->selectedProducts as $selectedItem) {
-                    ProductTransaction::create([
-                        'product_id' => $selectedItem['id'],
-                        'order_id'   => $order->id,
-                        'user_id'    => $this->user->id,
-                        'quantity'   => $selectedItem['quantity'],
-                        'type'       => 'sold',
-                        'local'      => 'stock',
-                        'amount'     => $selectedItem['amount'],
-                    ]);
+                    $service = new ProductTransactionService();
+                    $service->createProductTransaction(
+                        $selectedItem['id'],
+                        $selectedItem['quantity'],
+                        'sold',
+                        'store',
+                        $selectedItem['amount'],
+                        $order->id,
+                        null,
+                        $this->user
+                    );
                 }
 
                 $this->createTransaction($paymentMethodConfigs, $order->id);
@@ -202,8 +203,8 @@ class CreateOrder extends Component
                 'order_id'             => $orderId,
                 'type'                 => 'receivable',
                 'payment_method'       => $this->payment_method,
-                'amount'               => $amount,
-                'amount_paid'          => $transactionEffectiveDate ? 0 : $amount,
+                'amount'               => round($amount, 2),
+                'amount_paid'          => round($transactionEffectiveDate ? 0 : $amount, 2),
                 'status'               => $transactionEffectiveDate ? 'created' : 'done',
                 'payment_estimate_at'  => now()->addDays($transactionEffectiveDate),
                 'status_changed_at'    => now(),
@@ -219,6 +220,7 @@ class CreateOrder extends Component
 
         if (strlen($term) == 0) {
             $this->products = $this->productDefaults;
+
             return;
         }
 

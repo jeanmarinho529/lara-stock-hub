@@ -11,7 +11,7 @@
                 <p class="text-sm/6 text-gray-600">Dados do financeiro do dia {{ $date }}.</p>
             </div>
             <div>
-                <input type="date" id="date" wire:model.live="date" class="border rounded p-2 mt-2 md:mt-0">
+                <x-input type="date" name="date" wire:model.live="date"></x-input>
             </div>
         </div>
 
@@ -96,8 +96,7 @@
                 <p class="text-sm/6 text-gray-600">Valores a receber do ano de {{ $year }}.</p>
             </div>
             <div>
-                <input type="number" id="year" min="2025" step="1" wire:model.live="year"
-                    class="border rounded p-2 mt-2 md:mt-0">
+                <x-input type="number" name="year" min="2025" step="1" wire:model.live="year"></x-input>
             </div>
         </div>
 

@@ -23,11 +23,11 @@ class Client extends Model
 
     public function getDisplayTypeAttribute()
     {
-        $type = [
+        $types = [
             'client'   => 'Cliente',
             'supplier' => 'Fornecedor',
         ];
 
-        return $type[$this->type];
+        return $types[$this->type];
     }
 }
