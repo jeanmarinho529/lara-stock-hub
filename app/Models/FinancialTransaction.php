@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -26,6 +25,15 @@ class FinancialTransaction extends Model
         'status_changed_at',
         'description',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'payment_estimate_at'  => 'datetime:Y-m-d H:i:s',
+            'payment_completed_at' => 'datetime:Y-m-d H:i:s',
+            'status_changed_at'    => 'datetime:Y-m-d H:i:s',
+        ];
+    }
 
     public function getDisplayPaymentEstimateAtAttribute()
     {
