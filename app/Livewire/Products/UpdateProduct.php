@@ -38,7 +38,7 @@ class UpdateProduct extends Component
     public string $type = '';
 
     #[Validate('nullable|string|min:4')]
-    public string $description = '';
+    public ?string $description = '';
 
     public function mount($productId)
     {
