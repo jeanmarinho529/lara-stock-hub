@@ -7,6 +7,7 @@ use App\Models\FinancialTransaction;
 use App\Models\Order;
 use App\Models\PaymentMethodConfig;
 use App\Models\Product;
+use App\Models\ProductTransaction;
 use App\Models\User;
 use App\Services\ProductTransactionService;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,9 @@ class CreateOrder extends Component
 
     #[Validate('required|numeric|min:0')]
     public float $amount_received = 0;
+
+    #[Validate('required|bool')]
+    public bool $ignore_stock_check = false;
 
     public array $products;
 
@@ -150,6 +154,20 @@ class CreateOrder extends Component
 
         $this->validate();
 
+        if (! $this->ignore_stock_check) {
+            foreach ($this->selectedProducts as $selectedProduct) {
+                $total = ProductTransaction::where('store_id', $this->user->store_id)
+                    ->where('local', 'store')
+                    ->sum('quantity');
+
+                if ($total < $selectedProduct['quantity']) {
+                    session()->flash('waring', 'Você está vendo mais do que há no estoque da loja.');
+
+                    return;
+                }
+            }
+        }
+
         $paymentMethodConfigs = PaymentMethodConfig::where('type', 'receivable')
             ->where('payment_method', $this->payment_method)
             ->where('store_id', $this->user->store_id)
@@ -158,13 +176,13 @@ class CreateOrder extends Component
         try {
             DB::transaction(function () use ($paymentMethodConfigs) {
                 $order = Order::create([
-                    'client_id'       => $this->client_id,
-                    'store_id'        => $this->user->store_id,
-                    'user_id'         => $this->user->id,
-                    'payment_method'  => $this->payment_method,
-                    'installments'    => $this->installments,
-                    'amount'          => round($this->total, 2),
-                    'amount_received' => round($this->amount_received, 2),
+                    'client_id'      => $this->client_id,
+                    'store_id'       => $this->user->store_id,
+                    'user_id'        => $this->user->id,
+                    'payment_method' => $this->payment_method,
+                    'installments'   => $this->installments,
+                    'gross_amount'   => round($this->total, 2),
+                    'final_amount'   => round($this->amount_received, 2),
                 ]);
 
                 foreach ($this->selectedProducts as $selectedItem) {
@@ -194,9 +212,18 @@ class CreateOrder extends Component
     public function createTransaction($paymentMethodConfigs, $orderId)
     {
         foreach (range(1, $this->installments) as $installment) {
+            $grossAmount              = round($this->amount_received / $this->installments, 2);
+            $paidAmount               = 0;
             $paymentMethodConfig      = $paymentMethodConfigs->where('installments', $installment)->first();
-            $amount                   = $this->amount_received / $this->installments;
             $transactionEffectiveDate = $paymentMethodConfig->transaction_effective_date ?? 0;
+            $tax                      = $paymentMethodConfig->tax ?? 0;
+
+            $netAmount = $grossAmount * (1 - $tax / 100);
+            $netAmount = round($netAmount, 2);
+
+            if ($transactionEffectiveDate == 0) {
+                $paidAmount = $grossAmount;
+            }
 
             FinancialTransaction::create([
                 'client_id'            => $this->client_id,
@@ -205,13 +232,15 @@ class CreateOrder extends Component
                 'order_id'             => $orderId,
                 'type'                 => 'receivable',
                 'payment_method'       => $this->payment_method,
-                'amount'               => round($amount, 2),
-                'amount_paid'          => round($transactionEffectiveDate ? 0 : $amount, 2),
-                'status'               => $transactionEffectiveDate ? 'created' : 'done',
+                'gross_amount'         => $grossAmount,
+                'paid_amount'          => $paidAmount,
+                'net_amount'           => $netAmount,
+                'tax'                  => $tax,
+                'status'               => $transactionEffectiveDate ? 'waiting' : 'paid',
                 'payment_estimate_at'  => now()->addDays($transactionEffectiveDate),
                 'status_changed_at'    => now(),
                 'payment_completed_at' => $transactionEffectiveDate ? null : now(),
-                'description'          => "Valor a receber de R$ {$amount} / R$ {$this->amount_received} da venda {$orderId} - Parcela {$installment}/{$this->installments}",
+                'description'          => "Valor a receber de R$ {$grossAmount} / R$ {$this->amount_received} da venda {$orderId} - Parcela {$installment}/{$this->installments}",
             ]);
         }
     }

@@ -42,7 +42,7 @@ class IndexOrder extends Component
             'user_id',
             'payment_method',
             'installments',
-            'amount_received',
+            'final_amount',
             'created_at',
         )
             ->with('user:id,name', 'client:id,name')

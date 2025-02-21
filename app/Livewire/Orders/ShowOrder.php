@@ -27,8 +27,8 @@ class ShowOrder extends Component
             'user_id',
             'payment_method',
             'installments',
-            'amount',
-            'amount_received',
+            'gross_amount',
+            'final_amount',
             'created_at',
         )
             ->with(
@@ -37,7 +37,7 @@ class ShowOrder extends Component
                 'productTransactions:id,order_id,product_id,quantity,amount,local',
                 'productTransactions.product:id,brand_id,name,code',
                 'productTransactions.product.brand:id,name',
-                'financialTransactions:id,order_id,payment_method,status,payment_estimate_at,payment_completed_at,amount,amount_paid'
+                'financialTransactions:id,order_id,payment_method,status,payment_estimate_at,payment_completed_at,gross_amount,paid_amount'
             )
             ->where('store_id', $user->store_id)
             ->findOrFail($orderId);
