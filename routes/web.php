@@ -18,17 +18,16 @@ use App\Livewire\Products\UpdateProduct;
 use App\Livewire\Transactions\DashboardTransaction;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
-
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    ->middleware(['auth', 'verified']);
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', IndexOrder::class)->name('dashboard');
+
     Route::get('vendas/', IndexOrder::class)->name('orders.index');
     Route::get('vendas/{orderId}', ShowOrder::class)->name('orders.show');
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> -->
+
 <html lang="pt" translate="no">
 
 <head>
@@ -35,7 +35,7 @@
                                 <a href="{{ route('products.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Produtos</a>
                                 <a href="{{ route('products.transactions.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Movimentações</a>
                                 <a href="{{ route('brands.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Marcas</a>
-                                <a href="{{ route('financial.dashboard') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Financeiro</a>
+                                <a href="{{ route('financial.dashboard') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Dashboard Financeiro</a>
                                 <a href="{{ route('orders.index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                     <a href="{{ route('orders.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Produtos</a>
                     <a href="{{ route('products.transactions.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Movimentações</a>
                     <a href="{{ route('brands.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Marcas</a>
-                    <a href="{{ route('financial.dashboard') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Financeiro</a>
+                    <a href="{{ route('financial.dashboard') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Dashboard Financeiro</a>
                     <a href="{{ route('orders.index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
                 </div>
                 <div class="border-t border-gray-700 pt-4 pb-3">
