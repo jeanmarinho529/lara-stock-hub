@@ -148,14 +148,14 @@ class CreateOrder extends Component
             return;
         }
 
+        $this->validate();
+
         $paymentMethodConfigs = PaymentMethodConfig::where('type', 'receivable')
             ->where('payment_method', $this->payment_method)
             ->where('store_id', $this->user->store_id)
             ->get();
 
         try {
-            $this->validate();
-
             DB::transaction(function () use ($paymentMethodConfigs) {
                 $order = Order::create([
                     'client_id'       => $this->client_id,
@@ -236,7 +236,7 @@ class CreateOrder extends Component
             ->toArray();
 
         if (count($this->products) == 1) {
-            $this->addItem($this->products[0]);
+            $this->addProduct($this->products[0]);
             $this->searchTerm = '';
         }
 
