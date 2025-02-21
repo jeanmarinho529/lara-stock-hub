@@ -45,7 +45,14 @@ class IndexProduct extends Component
                 });
             })
             ->with('brand:id,name')
-            ->withSum('productTransactions', 'quantity')
+            ->withSum(['productTransactions as product_transactions_sum_quantity_store' => function ($query) {
+                $query->where('local', 'store');
+            }], 'quantity')
+            ->when($this->user->role == 'admin', function ($query) {
+                return $query->withSum(['productTransactions as product_transactions_sum_quantity_others' => function ($query) {
+                    $query->whereIn('local', ['stock', 'others']);
+                }], 'quantity');
+            })
             ->where('store_id', $this->user->store_id)
             ->orderBy('id', 'desc')
             ->paginate(10);

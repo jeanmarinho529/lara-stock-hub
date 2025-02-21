@@ -40,10 +40,33 @@ class UpdateProduct extends Component
     #[Validate('nullable|string|min:4')]
     public ?string $description = '';
 
+    #[Validate('integer')]
+    public int $stock_store = 0;
+
+    #[Validate('integer')]
+    public int $stock_stock = 0;
+
+    #[Validate('integer')]
+    public int $stock_others = 0;
+
     public function mount($productId)
     {
         $this->user    = Auth::user();
-        $this->product = Product::where('store_id', $this->user->store_id)->findOrFail($productId);
+        $this->product = Product::where('store_id', $this->user->store_id)
+            ->withSum(['productTransactions as product_transactions_sum_quantity_store' => function ($query) {
+                $query->where('local', 'store');
+            }], 'quantity')
+            ->when($this->user->role == 'admin', function ($query) {
+                return $query->withSum(['productTransactions as product_transactions_sum_quantity_stock' => function ($query) {
+                    $query->where('local', 'stock');
+                }], 'quantity');
+            })
+            ->when($this->user->role == 'admin', function ($query) {
+                return $query->withSum(['productTransactions as product_transactions_sum_quantity_others' => function ($query) {
+                    $query->where('local', 'others');
+                }], 'quantity');
+            })
+            ->findOrFail($productId);
 
         $this->brand_id         = $this->product->id;
         $this->brand_id         = $this->product->brand_id;
@@ -54,6 +77,10 @@ class UpdateProduct extends Component
         $this->unit_measurement = $this->product->unit_measurement;
         $this->type             = $this->product->type;
         $this->description      = $this->product->description;
+
+        $this->stock_store  = $this->product->product_transactions_sum_quantity_store ?? 0;
+        $this->stock_stock  = $this->product->product_transactions_sum_quantity_stock ?? 0;
+        $this->stock_others = $this->product->product_transactions_sum_quantity_others ?? 0;
     }
 
     public function save()

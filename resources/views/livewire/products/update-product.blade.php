@@ -78,6 +78,25 @@
                 </div>
             </div>
 
+            <div class="border-b border-gray-900/10 pb-12">
+                <h2 class="text-base/7 font-semibold text-gray-900">Detalhes do Estoque</h2>
+                <p class="text-sm/6 text-gray-600">Dados detalhado do estoque.</p>
+
+                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div class="sm:col-span-2">
+                        <x-input disabled name="stock_store" wire:model="stock_store">Loja</x-input>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <x-input disabled name="stock_stock" wire:model="stock_stock">Estoque</x-input>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <x-input disabled name="stock_others" wire:model="stock_others">Outros</x-input>
+                    </div>
+                </div>
+            </div>
+
             <div class="mt-6 flex items-center justify-end gap-x-6">
                 <a href="{{ route('products.index') }}" class="text-sm/6 font-semibold text-gray-900">Voltar</a>
                 <button type="submit"
