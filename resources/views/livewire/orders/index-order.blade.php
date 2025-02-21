@@ -57,7 +57,7 @@
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $order['user']['name'] }}</td>
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $order['client']['name'] }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['amount_received'] }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['final_amount'] }}</td>
                         <td class="px-4 py-2 text-sm text-gray-700">
                             <span class="py-2 text-sm text-gray-800">{{ $order['display_payment_method'] }}</span>
                         </td>

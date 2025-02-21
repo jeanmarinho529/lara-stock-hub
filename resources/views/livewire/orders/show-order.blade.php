@@ -42,15 +42,15 @@
                 </div>
 
                 <div class="sm:col-span-2">
-                    <x-input name="order.installments" value="{{ $order['installments'] }}" disabled>Parcelas</x-input>
+                    <x-input name="order.installments" value="{{ $order['installments'] }}x" disabled>N° Parcelas</x-input>
                 </div>
 
                 <div class="sm:col-span-2">
-                    <x-input name="order.amount" value="{{ $order['amount'] }}" disabled>Valor Total</x-input>
+                    <x-input name="order.amount" value="R$ {{ $order['gross_amount'] }}" disabled>Valor Total</x-input>
                 </div>
 
                 <div class="sm:col-span-2">
-                    <x-input name="order.amount_received" value="{{ $order['amount_received'] }}" disabled>Valor Total com Desconto</x-input>
+                    <x-input name="order.amount_received" value="R$ {{ $order['final_amount'] }}" disabled>Valor Final</x-input>
                 </div>
 
             </div>
@@ -73,15 +73,15 @@
                     </div>
 
                     <div class="sm:col-span-2">
+                        <x-input name="productTransactions.product.brand.name" value="{{ $productTransaction['product']['brand']['name'] }}" disabled>Marca</x-input>
+                    </div>
+                    
+                    <div class="sm:col-span-2">
                         <x-input name="productTransactions.product.code" value="{{ $productTransaction['product']['code'] }}" disabled>Código</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-input name="productTransactions.product.brand.name" value="{{ $productTransaction['product']['brand']['name'] }}" disabled>Marca</x-input>
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <x-input name="productTransactions.amount" value="{{ $productTransaction['amount'] }}" disabled>Valor Total</x-input>
+                        <x-input name="productTransactions.amount" value="R$ {{ $productTransaction['amount'] }}" disabled>Valor do Produto</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
@@ -107,10 +107,10 @@
                 <table class="min-w-full table-auto">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Estimativa de Pagamento Em</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Acordo de Pagamento Em</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Pago Em</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total Recebido</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total Liquido Recebido</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Método de Pagamento</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Status</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600"></th>
@@ -123,8 +123,8 @@
                                 {{ $transaction['display_payment_estimate_at'] }}
                             </td>
                             <td class="px-4 py-2 text-sm text-gray-700">{{ $transaction['display_payment_completed_at'] }}</td>
-                            <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $transaction['amount'] }}</td>
-                            <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $transaction['amount_paid'] }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $transaction['gross_amount'] }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $transaction['paid_amount'] }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700">
                                 <span class="py-2 text-sm text-gray-800">{{ $transaction['display_payment_method'] }}</span>
                             </td>

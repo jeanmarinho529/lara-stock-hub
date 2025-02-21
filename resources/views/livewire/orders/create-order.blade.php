@@ -182,6 +182,14 @@
 
         <x-alert></x-alert>
 
+        <div class="flex items-center gap-x-3">
+            <input id="ignore_stock_check" name="ignore_stock_check" type="checkbox" wire:model="ignore_stock_check"
+                class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto">
+            <label for="ignore_stock_check" class="block text-sm/6 font-medium text-gray-900">Realizar vendas sem
+                verificar o estoque.</label>
+        </div>
+
+
         <div class="mt-6 flex items-center justify-end gap-x-6">
             <a href="{{ route('orders.index') }}" class="text-sm font-semibold text-gray-900">Voltar</a>
             <button type="submit"

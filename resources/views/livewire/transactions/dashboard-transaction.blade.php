@@ -16,27 +16,28 @@
         </div>
 
         <div class="pt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+
             <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                 <div class="flex justify-between mb-6">
                     <div>
                         <div class="flex items-center mb-1">
                             <div class="text-2xl font-semibold">R$ {{ $totalAmountDay }}</div>
                         </div>
-                        <div class="text-sm font-medium text-gray-400">Total de Vendas</div>
+                        <div class="text-sm font-medium text-gray-400">Total Bruto de Vendas</div>
                     </div>
                 </div>
-
-                <a href="/gebruikers" class="text-[#f84525] font-medium text-sm hover:text-red-800">Detalhes</a>
+                {{-- <a href="/gebruikers" class="text-[#f84525] font-medium text-sm hover:text-red-800">Detalhes</a> --}}
             </div>
+
             <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                 <div class="flex justify-between mb-6">
                     <div>
                         <div class="text-2xl font-semibold mb-1">R$ {{ $salesCashInflow }}</div>
-                        <div class="text-sm font-medium text-gray-400">Entrada no Caixa</div>
+                        <div class="text-sm font-medium text-gray-400">Entrada Liquida no Caixa</div>
                     </div>
                 </div>
-                <a href="" class="text-[#f84525] font-medium text-sm hover:text-red-800">Detalhes</a>
             </div>
+
             <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                 <div class="flex justify-between mb-4">
                     <div>
@@ -46,8 +47,8 @@
                         <div class="text-sm font-medium text-gray-400">Ticket Médio</div>
                     </div>
                 </div>
-                <a href="/dierenartsen" class="text-[#f84525] font-medium text-sm hover:text-red-800">Detalhes</a>
             </div>
+
         </div>
 
         <h2 class="text-base/7 font-semibold text-gray-900">Detalhe de Vendas Por Método de Pagamento</h2>
@@ -60,7 +61,7 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Método de Pagamento</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total Bruto</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Data</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600"></th>
                         </tr>
@@ -70,9 +71,8 @@
                             <tr class="border-b">
                                 <td class="px-4 py-2 text-sm text-gray-700">{{ $paymentMethodDetail['payment_method'] }}
                                 </td>
-                                <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $paymentMethodDetail['total'] }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $paymentMethodDetail['gross_amount'] }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-700">{{ $date }}</td>
-
                                 <td class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
                                     <a href="{{ route('orders.show', $paymentMethodDetail['payment_method']) }}"
                                         class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs hover:bg-blue-200 hover:blue-blue-600 focus:outline-none cursor-pointer">
@@ -106,20 +106,20 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Mês</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total Bruto</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total Liquido</th>
                             <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total Recebido</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total a Receber</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
                         @foreach ($detailReceivables as $detailReceivable)
                             <tr class="border-b">
                                 <td class="px-4 py-2 text-sm text-gray-700">{{ $detailReceivable['month'] }}</td>
-                                <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $detailReceivable['amount'] }}</td>
-                                <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $detailReceivable['amount_paid'] }}
+                                <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $detailReceivable['gross_amount'] }}</td>
+                                <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $detailReceivable['net_amount'] }}
                                 </td>
                                 <td class="px-4 py-2 text-sm text-gray-700">R$
-                                    {{ $detailReceivable['amount_receive'] }}</td>
+                                    {{ $detailReceivable['paid_amount'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>

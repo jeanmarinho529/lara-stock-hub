@@ -38,7 +38,7 @@ class DashboardTransaction extends Component
 
     public function render()
     {
-        $orders = Order::select('amount_received', 'payment_method')
+        $orders = Order::select('final_amount', 'payment_method')
             ->where('store_id', $this->user->store_id)
             ->where('created_at', '>', $this->date)
             ->where('created_at', '<=', "$this->date 23:59:59")
@@ -48,10 +48,12 @@ class DashboardTransaction extends Component
             ->where('store_id', $this->user->store_id)
             ->where('payment_completed_at', '>', $this->date)
             ->where('payment_completed_at', '<=', "$this->date 23:59:59")
-            ->sum('amount_paid');
+            ->sum('paid_amount');
 
-        $this->totalAmountDay  = round($orders->sum('amount_received'), 2);
-        $this->averageTicket   = round($this->totalAmountDay / ($orders->count() + 1), 2);
+        $countOrders = $orders->count() > 0 ? $orders->count() : 1;
+
+        $this->totalAmountDay  = $orders->sum('final_amount');
+        $this->averageTicket   = round($this->totalAmountDay / $countOrders, 2);
         $this->salesCashInflow = round($this->salesCashInflow, 2);
 
         $this->buildPaymentMethodDetails($orders);
@@ -59,8 +61,9 @@ class DashboardTransaction extends Component
         $financialTransactions = FinancialTransaction::select(
             'payment_estimate_at',
             'payment_completed_at',
-            'amount',
-            'amount_paid'
+            'gross_amount',
+            'paid_amount',
+            'net_amount',
         )
             ->where('type', "receivable")
             ->where('store_id', $this->user->store_id)
@@ -71,14 +74,15 @@ class DashboardTransaction extends Component
         $this->detailReceivables = [];
 
         foreach (range(1, 12) as $month) {
-            $amount     = $this->sumTransactionByMonth($financialTransactions, $month, 'payment_estimate_at', 'amount');
-            $amountPaid = $this->sumTransactionByMonth($financialTransactions, $month, 'payment_completed_at', 'amount_paid');
+            $grossAmount = $this->sumTransactionByMonth($financialTransactions, $month, 'payment_estimate_at', 'gross_amount');
+            $netAmount   = $this->sumTransactionByMonth($financialTransactions, $month, 'payment_estimate_at', 'net_amount');
+            $paidAmount  = $this->sumTransactionByMonth($financialTransactions, $month, 'payment_completed_at', 'paid_amount');
 
             $this->detailReceivables[] = [
-                'month'          => $month . "/" . $this->year,
-                'amount'         => $amount,
-                'amount_paid'    => $amountPaid,
-                'amount_receive' => $amount - $amountPaid,
+                'month'        => $month . "/" . $this->year,
+                'gross_amount' => $grossAmount,
+                'net_amount'   => $netAmount,
+                'paid_amount'  => $paidAmount,
             ];
         }
 
@@ -90,23 +94,23 @@ class DashboardTransaction extends Component
         $this->paymentMethodDetails = [
             [
                 'payment_method' => 'PIX',
-                'total'          => $orders->where('payment_method', 'pix')->sum('amount_received'),
+                'gross_amount'   => $orders->where('payment_method', 'pix')->sum('final_amount'),
             ],
             [
                 'payment_method' => 'Cartão de Crédito',
-                'total'          => $orders->where('payment_method', 'credit_card')->sum('amount_received'),
+                'gross_amount'   => $orders->where('payment_method', 'credit_card')->sum('final_amount'),
             ],
             [
                 'payment_method' => 'Dinheiro',
-                'total'          => $orders->where('payment_method', 'cash')->sum('amount_received'),
+                'gross_amount'   => $orders->where('payment_method', 'cash')->sum('final_amount'),
             ],
             [
                 'payment_method' => 'Transferência Bancária',
-                'total'          => $orders->where('payment_method', 'bank_transfer')->sum('amount_received'),
+                'gross_amount'   => $orders->where('payment_method', 'bank_transfer')->sum('final_amount'),
             ],
             [
                 'payment_method' => 'Boleto',
-                'total'          => $orders->where('payment_method', 'bank_slip')->sum('amount_received'),
+                'gross_amount'   => $orders->where('payment_method', 'bank_slip')->sum('final_amount'),
             ],
         ];
     }
