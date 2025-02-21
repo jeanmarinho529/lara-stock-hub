@@ -14,16 +14,16 @@ class UpdateClient extends Component
     #[Validate('required|string|min:4')]
     public string $name;
 
-    #[Validate('required|string|min:11')]
-    public string $document;
+    #[Validate('nullable|required_with:document_type|string|min:11')]
+    public ?string $document;
 
-    #[Validate('required|string|in:cpf,cnpj')]
-    public string $document_type = 'cpf';
+    #[Validate('required_with:document|string|in:cpf,cnpj')]
+    public string $document_type = '';
 
     #[Validate('required|string|in:client,supplier')]
     public string $type = 'client';
 
-    #[Validate('nullable|email')]
+    #[Validate('nullable|required_if:type,supplier|email')]
     public ?string $email;
 
     #[Validate('nullable|string|min:11')]

@@ -17,15 +17,16 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-input is_required name="document" wire:model="document"
-                            x-mask:dynamic="documentMask">Documento</x-input>
+                        <x-input is_required name="cell_number" wire:model="cell_number"
+                            x-mask:dynamic="numberMask">Celular</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-select is_required wire:model="document_type" name="document_type" label="Tipo do Documento">
-                            <option value="" disabled selected>Selecione o Tipo do Documento</option>
-                            <option value="cpf">CPF</option>
-                            <option value="cnpj">CNPJ</option>
+                        <x-select is_required wire:model="cell_number_is_whatsapp" name="cell_number_is_whatsapp"
+                            label="Celular é Whatsapp">
+                            <option value="" disabled selected>Celular é Whatsapp</option>
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
                         </x-select>
                     </div>
 
@@ -38,16 +39,14 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-input is_required name="cell_number" wire:model="cell_number"
-                            x-mask:dynamic="numberMask">Celular</x-input>
+                        <x-input name="document" wire:model="document" x-mask:dynamic="documentMask">Documento</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-select is_required wire:model="cell_number_is_whatsapp" name="cell_number_is_whatsapp"
-                            label="Celular é Whatsapp">
-                            <option value="" disabled selected>Celular é Whatsapp</option>
-                            <option value="1">Sim</option>
-                            <option value="0">Não</option>
+                        <x-select wire:model="document_type" name="document_type" label="Tipo do Documento">
+                            <option value="" disabled selected>Selecione o Tipo do Documento</option>
+                            <option value="cpf">CPF</option>
+                            <option value="cnpj">CNPJ</option>
                         </x-select>
                     </div>
 

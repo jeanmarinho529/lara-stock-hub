@@ -15,8 +15,8 @@ return new class () extends Migration
             $table->id();
             $table->unsignedBigInteger('store_id');
             $table->string('name');
-            $table->string('document');
-            $table->enum('document_type', ['cpf', 'cnpj']);
+            $table->string('document')->nullable();
+            $table->enum('document_type', ['cpf', 'cnpj'])->nullable();
             $table->enum('type', ['client', 'supplier']);
             $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
@@ -26,7 +26,7 @@ return new class () extends Migration
             $table->softDeletes();
 
             $table->foreign('store_id')->references('id')->on('stores');
-            $table->unique(['store_id', 'type', 'document', 'document_type'], 'unq_clients');
+            $table->unique(['store_id', 'type', 'cell_number'], 'unq_clients');
         });
     }
 
