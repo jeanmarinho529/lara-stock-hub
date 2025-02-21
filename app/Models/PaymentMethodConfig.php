@@ -12,6 +12,7 @@ class PaymentMethodConfig extends Model
         'payment_method',
         'installments',
         'transaction_effective_date',
+        'tax',
         'auto_deduction',
     ];
 }

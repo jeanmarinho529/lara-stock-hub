@@ -22,8 +22,9 @@ return new class () extends Migration
                 'payment_method',
                 ['credit_card', 'bank_transfer', 'pix', 'bank_slip', 'cash']
             )->nullable();
-            $table->tinyInteger('installments');
-            $table->tinyInteger('transaction_effective_date');
+            $table->tinyInteger('installments')->unsigned();
+            $table->tinyInteger('transaction_effective_date')->unsigned();
+            $table->double('tax')->unsigned();
             $table->boolean('auto_deduction');
             $table->timestamps();
 
