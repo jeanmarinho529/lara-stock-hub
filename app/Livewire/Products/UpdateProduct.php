@@ -88,7 +88,7 @@ class UpdateProduct extends Component
         $this->validate();
 
         try {
-            Product::where('id', $this->product->id)->update($this->except('product', 'user'));
+            Product::where('id', $this->product->id)->update($this->except('product', 'user', 'stock_store', 'stock_stock', 'stock_others'));
         } catch (QueryException $e) {
             if ($e->getCode() == 23000) {
                 session()->flash('waring', 'Código já cadastrado em outro produto, insira outro código!');
