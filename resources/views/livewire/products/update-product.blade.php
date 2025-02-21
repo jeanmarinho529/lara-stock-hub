@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-input is_required name="code" wire:model="code">Código</x-input>
+                        <x-input is_required name="code" wire:model="code" @keydown.enter.prevent="return false">Código</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
