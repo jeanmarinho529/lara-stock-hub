@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-input name="productTransactions.quantity" value="{{ $productTransaction['quantity'] }}" disabled>Quantidade</x-input>
+                        <x-input name="productTransactions.quantity" value="{{ abs($productTransaction['quantity']) }}" disabled>Quantidade</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
