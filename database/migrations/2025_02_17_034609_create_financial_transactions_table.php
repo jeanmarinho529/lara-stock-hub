@@ -26,9 +26,11 @@ return new class () extends Migration
                 'payment_method',
                 ['credit_card', 'bank_transfer', 'pix', 'bank_slip', 'cash']
             )->nullable();
-            $table->double('amount');
-            $table->double('amount_paid')->default(0);
-            $table->enum('status', ['created', 'done', 'partial', 'canceled']);
+            $table->double('gross_amount');
+            $table->double('paid_amount')->default(0);
+            $table->double('net_amount')->default(0);
+            $table->double('tax')->unsigned()->default(0);
+            $table->enum('status', ['waiting', 'paid', 'partial', 'canceled']);
             $table->timestamp('payment_estimate_at');
             $table->timestamp('payment_completed_at')->nullable();
             $table->timestamp('status_changed_at');

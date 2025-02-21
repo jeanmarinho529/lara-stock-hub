@@ -15,8 +15,8 @@ class Order extends Model
         'user_id',
         'payment_method',
         'installments',
-        'amount',
-        'amount_received',
+        'gross_amount',
+        'final_amount',
         'description',
     ];
 

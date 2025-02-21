@@ -17,8 +17,10 @@ class FinancialTransaction extends Model
         'order_id',
         'type',
         'payment_method',
-        'amount',
-        'amount_paid',
+        'gross_amount',
+        'paid_amount',
+        'net_amount',
+        'tax',
         'status',
         'payment_estimate_at',
         'payment_completed_at',
@@ -78,8 +80,8 @@ class FinancialTransaction extends Model
     public function getDisplayStatusAttribute()
     {
         $status = [
-            'created'  => 'Criado',
-            'done'     => 'Concluído',
+            'waiting'  => 'Aguardando',
+            'paid'     => 'Pago',
             'partial'  => 'Parcial',
             'canceled' => 'Cancelado',
         ];

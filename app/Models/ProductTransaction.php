@@ -18,7 +18,6 @@ class ProductTransaction extends Model
         'type',
         'local',
         'amount',
-        'amount_received',
     ];
 
     public function getDisplayTypeAttribute()

@@ -21,8 +21,8 @@ return new class () extends Migration
                 ['credit_card', 'bank_transfer', 'pix', 'bank_slip', 'cash']
             )->nullable();
             $table->tinyInteger('installments')->default(1);
-            $table->double('amount')->unsigned();
-            $table->double('amount_received')->unsigned();
+            $table->double('gross_amount')->unsigned();
+            $table->double('final_amount')->unsigned();
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
