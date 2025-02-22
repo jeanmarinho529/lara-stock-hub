@@ -155,6 +155,7 @@ class CreateOrder extends Component
         $this->validate();
 
         if (! $this->ignore_stock_check) {
+            $valid = true;
             foreach ($this->selectedProducts as $selectedProduct) {
                 $total = ProductTransaction::where('store_id', $this->user->store_id)
                     ->where('local', 'store')
@@ -162,9 +163,13 @@ class CreateOrder extends Component
 
                 if ($total < $selectedProduct['quantity']) {
                     session()->flash('waring', 'Você está vendo mais do que há no estoque da loja.');
-
+                    $valid = false;
                     return;
                 }
+            }
+
+            if (!$valid) {
+                return;
             }
         }
 
