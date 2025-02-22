@@ -250,6 +250,7 @@ return [
         'product'                 => 'produto',
         'payment_method'          => 'método de pagamento',
         'installments'            => 'parcelas',
+        'supplier'                => 'fornecedor',
     ],
 
 ];

@@ -18,7 +18,8 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-input is_required name="code" wire:model="code" @keydown.enter.prevent="return false">Código</x-input>
+                        <x-input is_required name="code" wire:model="code"
+                            @keydown.enter.prevent="return false">Código</x-input>
                     </div>
 
                     <div class="sm:col-span-2">
@@ -40,7 +41,8 @@
                     </div>
 
                     <div class="sm:col-span-2">
-                        <x-select name="unit_measurement" wire:model="unit_measurement" is_required label="Unidade de Medida">
+                        <x-select name="unit_measurement" wire:model="unit_measurement" is_required
+                            label="Unidade de Medida">
                             <option value="" disabled selected>Selecione a Unidade de Medida</option>
                             <option value="unit">UN - Unidade</option>
                             <option value="meter">M - Metro</option>
@@ -74,6 +76,9 @@
                             focus:-outline-offset-2 focus:outline-indigo-600 
                             sm:text-sm/6"
                             placeholder="Descreva seu produto aqui..."></textarea>
+                        @error('description')
+                            <span class="error text-red-600 sm:text-sm/6">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
