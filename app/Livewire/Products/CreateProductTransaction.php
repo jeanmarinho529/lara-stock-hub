@@ -72,6 +72,12 @@ class CreateProductTransaction extends Component
             return;
         }
 
+        if ($this->user->role == 'seller' & $this->type != 'transferred') {
+            session()->flash('waring', 'Você não tem permissão para adicionar ou remover produtos!');
+
+            return;
+        }
+
         if (in_array($this->type, ['removed', 'transferred'])) {
             $totalQuantity = ProductTransaction::where('product_id', $this->productId)
                 ->where('local', $this->local)
@@ -144,17 +150,13 @@ class CreateProductTransaction extends Component
             return;
         }
 
-        if (strlen($term) < 3) {
-            return;
-        }
-
         $this->products = Product::where('type', 'product')->searchByCode($this->user->store_id, $term)
-            ->limit(1)
+            ->limit(10)
             ->get()
             ->toArray();
 
         if (count($this->products) == 1) {
-            $this->addItem($this->products[0]);
+            $this->addProduct($this->products[0]);
             $this->searchTerm = '';
         }
 

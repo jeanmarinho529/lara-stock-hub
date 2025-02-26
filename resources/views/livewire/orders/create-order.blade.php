@@ -176,6 +176,24 @@
                             min="0" step="0.01">Valor Total da Venda</x-input>
                     </div>
 
+                    <div class="sm:col-span-6">
+                        <label for="description" class="block text-sm/6 font-medium text-gray-900">
+                            Descrição
+                        </label>
+
+                        <textarea id="description" name="description" wire:model="description" rows="3"
+                            class="
+                            block w-full rounded-md bg-white px-3 py-1.5 text-base 
+                            text-gray-900 outline-1 -outline-offset-1 outline-gray-300 
+                            placeholder:text-gray-400 focus:outline-2 
+                            focus:-outline-offset-2 focus:outline-indigo-600 
+                            sm:text-sm/6"
+                            placeholder="Descreva sua venda aqui..."></textarea>
+                        @error('description')
+                            <span class="error text-red-600 sm:text-sm/6">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                 </div>
             </div>
         </div>

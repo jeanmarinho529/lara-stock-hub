@@ -29,6 +29,7 @@ class ShowOrder extends Component
             'installments',
             'gross_amount',
             'final_amount',
+            'description',
             'created_at',
         )
             ->with(

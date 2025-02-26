@@ -37,7 +37,7 @@ class Product extends Model
         return $query->select('id', 'brand_id', 'code', 'name', 'amount')
             ->with('brand:id,name')
             ->where('store_id', $storeId)
-            ->where('code', $code);
+            ->where('code', 'like', "%$code%");
     }
 
     public function scopeSearchByName($query, string $storeId, ?string $name = null)

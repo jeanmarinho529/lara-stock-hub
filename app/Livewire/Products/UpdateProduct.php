@@ -56,16 +56,12 @@ class UpdateProduct extends Component
             ->withSum(['productTransactions as product_transactions_sum_quantity_store' => function ($query) {
                 $query->where('local', 'store');
             }], 'quantity')
-            ->when($this->user->role == 'admin', function ($query) {
-                return $query->withSum(['productTransactions as product_transactions_sum_quantity_stock' => function ($query) {
-                    $query->where('local', 'stock');
-                }], 'quantity');
-            })
-            ->when($this->user->role == 'admin', function ($query) {
-                return $query->withSum(['productTransactions as product_transactions_sum_quantity_others' => function ($query) {
-                    $query->where('local', 'others');
-                }], 'quantity');
-            })
+            ->withSum(['productTransactions as product_transactions_sum_quantity_stock' => function ($query) {
+                $query->where('local', 'stock');
+            }], 'quantity')
+            ->withSum(['productTransactions as product_transactions_sum_quantity_others' => function ($query) {
+                $query->where('local', 'others');
+            }], 'quantity')
             ->findOrFail($productId);
 
         $this->brand_id         = $this->product->id;

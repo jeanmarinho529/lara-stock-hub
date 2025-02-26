@@ -51,6 +51,9 @@ class CreateOrder extends Component
     #[Validate('required|numeric|min:0')]
     public float $amount_received = 0;
 
+    #[Validate('nullable|string|min:4')]
+    public ?string $description = null;
+
     #[Validate('required|bool')]
     public bool $ignore_stock_check = false;
 
@@ -156,12 +159,46 @@ class CreateOrder extends Component
 
         if (! $this->ignore_stock_check) {
             foreach ($this->selectedProducts as $selectedProduct) {
-                $total = ProductTransaction::where('store_id', $this->user->store_id)
+                $transactions = ProductTransaction::select('local', 'quantity')
+                    ->where('store_id', $this->user->store_id)
                     ->where('product_id', $selectedProduct['id'])
-                    ->where('local', 'store')
-                    ->sum('quantity');
+                    ->whereIn('local', ['store', 'stock'])
+                    ->get();
 
-                if ($total < $selectedProduct['quantity']) {
+                $totalStore = $transactions->where('local', 'store')->sum('quantity');
+                $totalStock = $transactions->where('local', 'stock')->sum('quantity');
+
+                $dif = $selectedProduct['quantity'] - $totalStore;
+
+                if ($totalStore < $selectedProduct['quantity'] & $dif <= $totalStock) {
+                    DB::transaction(function () use ($selectedProduct, $dif) {
+                        ProductTransaction::create([
+                            'product_id' => $selectedProduct['id'],
+                            'order_id'   => null,
+                            'store_id'   => $this->user->store_id,
+                            'user_id'    => $this->user->id,
+                            'quantity'   => $dif,
+                            'type'       => 'added',
+                            'local'      => 'store',
+                            'amount'     => 0,
+                        ]);
+
+                        ProductTransaction::create([
+                            'product_id' => $selectedProduct['id'],
+                            'order_id'   => null,
+                            'store_id'   => $this->user->store_id,
+                            'user_id'    => $this->user->id,
+                            'quantity'   => $dif * -1,
+                            'type'       => 'transferred',
+                            'local'      => 'stock',
+                            'amount'     => 0,
+                        ]);
+                    }, 5);
+
+                    continue;
+                }
+
+                if ($totalStore < $selectedProduct['quantity']) {
                     session()->flash('waring', 'Você está vendo mais do que há no estoque da loja.');
 
                     return;
@@ -184,6 +221,7 @@ class CreateOrder extends Component
                     'installments'   => $this->installments,
                     'gross_amount'   => round($this->total, 2),
                     'final_amount'   => round($this->amount_received, 2),
+                    'description'    => $this->description,
                 ]);
 
                 foreach ($this->selectedProducts as $selectedItem) {
@@ -212,38 +250,36 @@ class CreateOrder extends Component
 
     public function createTransaction($paymentMethodConfigs, $orderId)
     {
-        foreach (range(1, $this->installments) as $installment) {
-            $grossAmount              = round($this->amount_received / $this->installments, 2);
-            $paidAmount               = 0;
-            $paymentMethodConfig      = $paymentMethodConfigs->where('installments', $installment)->first();
-            $transactionEffectiveDate = $paymentMethodConfig->transaction_effective_date ?? 0;
-            $tax                      = $paymentMethodConfig->tax ?? 0;
+        $grossAmount              = round($this->amount_received, 2);
+        $paidAmount               = 0;
+        $paymentMethodConfig      = $paymentMethodConfigs->where('installments', 1)->first();
+        $transactionEffectiveDate = $paymentMethodConfig->transaction_effective_date ?? 0;
+        $tax                      = $paymentMethodConfig->tax ?? 0;
 
-            $netAmount = $grossAmount * (1 - $tax / 100);
-            $netAmount = round($netAmount, 2);
+        $netAmount = $grossAmount * (1 - $tax / 100);
+        $netAmount = round($netAmount, 2);
 
-            if ($transactionEffectiveDate == 0) {
-                $paidAmount = $grossAmount;
-            }
-
-            FinancialTransaction::create([
-                'client_id'            => $this->client_id,
-                'create_by_user_id'    => $this->user->id,
-                'store_id'             => $this->user->store_id,
-                'order_id'             => $orderId,
-                'type'                 => 'receivable',
-                'payment_method'       => $this->payment_method,
-                'gross_amount'         => $grossAmount,
-                'paid_amount'          => $paidAmount,
-                'net_amount'           => $netAmount,
-                'tax'                  => $tax,
-                'status'               => $transactionEffectiveDate ? 'waiting' : 'paid',
-                'payment_estimate_at'  => now()->addDays($transactionEffectiveDate),
-                'status_changed_at'    => now(),
-                'payment_completed_at' => $transactionEffectiveDate ? null : now(),
-                'description'          => "Valor a receber de R$ {$grossAmount} / R$ {$this->amount_received} da venda {$orderId} - Parcela {$installment}/{$this->installments}",
-            ]);
+        if ($transactionEffectiveDate == 0) {
+            $paidAmount = $grossAmount;
         }
+
+        FinancialTransaction::create([
+            'client_id'            => $this->client_id,
+            'create_by_user_id'    => $this->user->id,
+            'store_id'             => $this->user->store_id,
+            'order_id'             => $orderId,
+            'type'                 => 'receivable',
+            'payment_method'       => $this->payment_method,
+            'gross_amount'         => $grossAmount,
+            'paid_amount'          => $paidAmount,
+            'net_amount'           => $netAmount,
+            'tax'                  => $tax,
+            'status'               => $transactionEffectiveDate ? 'waiting' : 'paid',
+            'payment_estimate_at'  => now()->addDays($transactionEffectiveDate),
+            'status_changed_at'    => now(),
+            'payment_completed_at' => $transactionEffectiveDate ? null : now(),
+            'description'          => "Valor a receber de R$ {$grossAmount} / R$ {$this->amount_received} da venda {$orderId}",
+        ]);
     }
 
     public function updatedSearchTerm($term)
@@ -256,12 +292,8 @@ class CreateOrder extends Component
             return;
         }
 
-        if (strlen($term) < 3) {
-            return;
-        }
-
         $this->products = Product::searchByCode($this->user->store_id, $term)
-            ->limit(1)
+            ->limit(10)
             ->get()
             ->toArray();
 
