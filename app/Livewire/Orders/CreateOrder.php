@@ -199,7 +199,7 @@ class CreateOrder extends Component
                 }
 
                 if ($totalStore < $selectedProduct['quantity']) {
-                    session()->flash('waring', 'Você está vendo mais do que há no estoque da loja.');
+                    session()->flash('waring', 'Você está vedendo mais do que há no estoque da loja.');
 
                     return;
                 }
