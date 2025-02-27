@@ -67,11 +67,12 @@ class FinancialTransaction extends Model
     public function getDisplayPaymentMethodAttribute()
     {
         $methods = [
-            'credit_card'   => 'Cartão de Crédito',
-            'bank_transfer' => 'Transferência Bancária',
-            'pix'           => 'PIX',
-            'bank_slip'     => 'Boleto',
-            'cash'          => 'Dinheiro',
+            'credit_card'    => 'Cartão de Crédito',
+            'bank_transfer'  => 'Transferência Bancária',
+            'pix'            => 'PIX',
+            'bank_slip'      => 'Boleto',
+            'cash'           => 'Dinheiro',
+            'future_payment' => 'Pagamento Futuro',
         ];
 
         return $methods[$this->payment_method];

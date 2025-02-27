@@ -251,6 +251,7 @@ return [
         'payment_method'          => 'método de pagamento',
         'installments'            => 'parcelas',
         'supplier'                => 'fornecedor',
+        'future_payment'          => 'Pagamento Futuro',
     ],
 
 ];

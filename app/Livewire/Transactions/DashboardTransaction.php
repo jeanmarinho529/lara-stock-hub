@@ -112,6 +112,10 @@ class DashboardTransaction extends Component
                 'payment_method' => 'Boleto',
                 'gross_amount'   => $orders->where('payment_method', 'bank_slip')->sum('final_amount'),
             ],
+            [
+                'payment_method' => 'Pagamento Futuro',
+                'gross_amount'   => $orders->where('payment_method', 'future_payment')->sum('final_amount'),
+            ],
         ];
     }
 

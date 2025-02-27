@@ -28,11 +28,12 @@ class Order extends Model
     public function getDisplayPaymentMethodAttribute()
     {
         $paymentMethods = [
-            'credit_card'   => 'Cartão de Crédito',
-            'bank_transfer' => 'Transferência Bancária',
-            'pix'           => 'PIX',
-            'bank_slip'     => 'Boleto',
-            'cash'          => 'Dinheiro',
+            'credit_card'    => 'Cartão de Crédito',
+            'bank_transfer'  => 'Transferência Bancária',
+            'pix'            => 'PIX',
+            'bank_slip'      => 'Boleto',
+            'cash'           => 'Dinheiro',
+            'future_payment' => 'Pagamento Futuro',
         ];
 
         return $paymentMethods[$this->payment_method];

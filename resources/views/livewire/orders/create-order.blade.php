@@ -146,6 +146,7 @@
                             <option value="credit_card">Cartão de Crédito</option>
                             <option value="bank_slip">Boleto</option>
                             <option value="bank_transfer">Transferência Bancária</option>
+                            <option value="future_payment">Pagamento Futuro</option>
                         </x-select>
                     </div>
 
