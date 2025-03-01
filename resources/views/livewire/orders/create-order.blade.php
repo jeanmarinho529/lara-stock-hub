@@ -33,10 +33,10 @@
                 <h2 class="text-base/7 font-semibold text-gray-900">Venda</h2>
                 <p class="text-sm/6 text-gray-600">Selecione os produtos para realizar a venda.</p>
 
-                <div class="mt-10 sm:col-span-6 pb-6">
+                <div id="search-products" class="mt-10 sm:col-span-6 pb-6">
                     <div x-data="{ isOpen: false, searchTerm: '' }">
                         <div class="relative">
-                            <a @click="isOpen = !isOpen"
+                            <a @click="isOpen = !isOpen; if (isOpen) { $nextTick(() => $refs.searchInput.focus()); }"
                                 class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
                                 <span class="mr-2">Procurar Produtos</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20"
@@ -61,7 +61,7 @@
 
                                 <!-- Dropdown items -->
                                 <template x-for="(item, index) in @js($products)" :key="index">
-                                    <a href="#"
+                                    <a href="#search-products"
                                         class="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
                                         @click="$wire.addProduct(item); searchTerm = ''; $refs.searchInput.focus();">
                                         <span x-text="item.brand.name"></span>
