@@ -96,6 +96,7 @@ class UpdateProduct extends Component
         }
 
         session()->flash('success', 'Produto atualizado com sucesso.');
+        redirect()->route('products.index');
     }
 
     public function render()

@@ -47,12 +47,12 @@
                         <tr class="border-b">
                             <td class="px-4 py-2 text-sm text-gray-700">{{ $product['display_type'] }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700">{{ $product['name'] }}</td>
-                            <td class="px-4 py-2 text-sm text-gray-700">{{ $product['brand']['name'] ?? '' }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-700">{{ $product['brand']['name'] ?? '-' }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700">{{ $product['code'] }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700">
                                 {{ $product['product_transactions_sum_quantity_store'] ?? 0 }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700">
-                                    {{ $product['product_transactions_sum_quantity_others'] ?? '' }}</td>
+                                    {{ $product['product_transactions_sum_quantity_others'] ?? 0 }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $product['amount'] }}</td>
                             <td class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
                                 <a href="{{ route('products.update', $product['id']) }}"
