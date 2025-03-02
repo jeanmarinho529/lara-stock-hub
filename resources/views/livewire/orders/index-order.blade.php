@@ -43,9 +43,10 @@
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Vendido Em</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Vendido Por</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Vendido Para</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Total</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">V. Total</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">V. Final</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Método de Pagamento</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">N° de Parcelas</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Qt. de Produtos</th>
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-600"></th>
                     </tr>
                 </thead>
@@ -57,12 +58,13 @@
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $order['user']['name'] }}</td>
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $order['client']['name'] }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['gross_amount'] }}</td>
                         <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['final_amount'] }}</td>
                         <td class="px-4 py-2 text-sm text-gray-700">
-                            <span class="py-2 text-sm text-gray-800">{{ $order['display_payment_method'] }}</span>
+                            <span class="py-2 text-sm text-gray-800">{{ $order['installments'] }}x - {{ $order['display_payment_method'] }}</span>
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-700">
-                            <span class="py-2 text-sm text-gray-800">{{ $order['installments'] }}x</span>
+                            <span class="py-2 text-sm text-gray-800">{{ $order['quantity_products'] }}</span>
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
                             <a
