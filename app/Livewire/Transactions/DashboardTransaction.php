@@ -5,6 +5,7 @@ namespace App\Livewire\Transactions;
 use App\Models\FinancialTransaction;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\PaymentMethodsService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -91,32 +92,14 @@ class DashboardTransaction extends Component
 
     public function buildPaymentMethodDetails($orders)
     {
-        $this->paymentMethodDetails = [
-            [
-                'payment_method' => 'PIX',
-                'gross_amount'   => $orders->where('payment_method', 'pix')->sum('final_amount'),
-            ],
-            [
-                'payment_method' => 'Cartão de Crédito',
-                'gross_amount'   => $orders->where('payment_method', 'credit_card')->sum('final_amount'),
-            ],
-            [
-                'payment_method' => 'Dinheiro',
-                'gross_amount'   => $orders->where('payment_method', 'cash')->sum('final_amount'),
-            ],
-            [
-                'payment_method' => 'Transferência Bancária',
-                'gross_amount'   => $orders->where('payment_method', 'bank_transfer')->sum('final_amount'),
-            ],
-            [
-                'payment_method' => 'Boleto',
-                'gross_amount'   => $orders->where('payment_method', 'bank_slip')->sum('final_amount'),
-            ],
-            [
-                'payment_method' => 'Pagamento Futuro',
-                'gross_amount'   => $orders->where('payment_method', 'future_payment')->sum('final_amount'),
-            ],
-        ];
+        $this->paymentMethodDetails = [];
+
+        foreach (PaymentMethodsService::methods() as $key => $value) {
+            $this->paymentMethodDetails[] = [
+                'payment_method' => $value,
+                'gross_amount'   => $orders->where('payment_method', $key)->sum('final_amount'),
+            ];
+        }
     }
 
     public function sumTransactionByMonth($financialTransaction, string $month, string $filterField, string $sumFiled)

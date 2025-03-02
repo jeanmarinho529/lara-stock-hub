@@ -141,12 +141,9 @@
                         <x-select wire:model="payment_method" name="payment_method" label="Método de Pagamento"
                             is_required>
                             <option value="" disabled selected>Escolha o Método de Pagamento</option>
-                            <option value="cash">Dinheiro</option>
-                            <option value="pix">Pix</option>
-                            <option value="credit_card">Cartão de Crédito</option>
-                            <option value="bank_slip">Boleto</option>
-                            <option value="bank_transfer">Transferência Bancária</option>
-                            <option value="future_payment">Pagamento Futuro</option>
+                            @foreach (App\Services\PaymentMethodsService::methods() as $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
                         </x-select>
                     </div>
 

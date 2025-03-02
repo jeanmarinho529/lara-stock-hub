@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\PaymentMethodsService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -66,16 +67,7 @@ class FinancialTransaction extends Model
 
     public function getDisplayPaymentMethodAttribute()
     {
-        $methods = [
-            'credit_card'    => 'Cartão de Crédito',
-            'bank_transfer'  => 'Transferência Bancária',
-            'pix'            => 'PIX',
-            'bank_slip'      => 'Boleto',
-            'cash'           => 'Dinheiro',
-            'future_payment' => 'Pagamento Futuro',
-        ];
-
-        return $methods[$this->payment_method];
+        return PaymentMethodsService::findMethod($this->payment_method);
     }
 
     public function getDisplayStatusAttribute()

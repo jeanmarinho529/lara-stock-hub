@@ -13,11 +13,9 @@
                 <div class="sm:col-span-3">
                     <x-select name="payment_method" label="Tipo de Pagamento" wire:model.live="payment_method">
                         <option value="" selected>Filtre por Tipo de Pagamento</option>
-                        <option value="credit_card">Cartão de Crédito</option>
-                        <option value="pix">PIX</option>
-                        <option value="cash">Dinheiro</option>
-                        <option value="bank_transfer">Transferência Bancária</option>
-                        <option value="bank_slip">Boleto</option>
+                        @foreach (App\Services\PaymentMethodsService::methods() as $key => $value)
+                            <option value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
                     </x-select>
                 </div>
 
@@ -51,29 +49,29 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white">
-                    @foreach($orders as $order)
-                    <tr class="border-b">
-                        <td class="px-4 py-2 text-sm text-gray-700">
-                            {{ $order['display_created_at'] }}
-                        </td>
-                        <td class="px-4 py-2 text-sm text-gray-700">{{ $order['user']['name'] }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-700">{{ $order['client']['name'] }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['gross_amount'] }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['final_amount'] }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-700">
-                            <span class="py-2 text-sm text-gray-800">{{ $order['installments'] }}x - {{ $order['display_payment_method'] }}</span>
-                        </td>
-                        <td class="px-4 py-2 text-sm text-gray-700">
-                            <span class="py-2 text-sm text-gray-800">{{ $order['quantity_products'] }}</span>
-                        </td>
-                        <td class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
-                            <a
-                                href="{{ route('orders.show', $order['id']) }}"
-                                class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs hover:bg-blue-200 hover:blue-blue-600 focus:outline-none cursor-pointer">
-                                Detalhes
-                            </a>
-                        </td>
-                    </tr>
+                    @foreach ($orders as $order)
+                        <tr class="border-b">
+                            <td class="px-4 py-2 text-sm text-gray-700">
+                                {{ $order['display_created_at'] }}
+                            </td>
+                            <td class="px-4 py-2 text-sm text-gray-700">{{ $order['user']['name'] }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-700">{{ $order['client']['name'] }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['gross_amount'] }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-700">R$ {{ $order['final_amount'] }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-700">
+                                <span class="py-2 text-sm text-gray-800">{{ $order['installments'] }}x -
+                                    {{ $order['display_payment_method'] }}</span>
+                            </td>
+                            <td class="px-4 py-2 text-sm text-gray-700">
+                                <span class="py-2 text-sm text-gray-800">{{ $order['quantity_products'] }}</span>
+                            </td>
+                            <td class="px-4 py-2 text-sm text-gray-700 flex justify-start items-center space-x-2">
+                                <a href="{{ route('orders.show', $order['id']) }}"
+                                    class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs hover:bg-blue-200 hover:blue-blue-600 focus:outline-none cursor-pointer">
+                                    Detalhes
+                                </a>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
