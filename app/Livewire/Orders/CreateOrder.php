@@ -36,7 +36,7 @@ class CreateOrder extends Component
     #[Validate('required|numeric|min:0')]
     public float $total = 0;
 
-    #[Validate('required|string|in:cash,pix,credit_card,bank_slip,bank_transfer,future_payment')]
+    #[Validate('required|string|in:cash,pix,credit_card,bank_slip,bank_transfer,future_payment,debit')]
     public string $payment_method = '';
 
     #[Validate('required|integer|min:1')]
