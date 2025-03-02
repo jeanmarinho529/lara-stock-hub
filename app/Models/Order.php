@@ -17,6 +17,7 @@ class Order extends Model
         'installments',
         'gross_amount',
         'final_amount',
+        'quantity_products',
         'description',
     ];
 

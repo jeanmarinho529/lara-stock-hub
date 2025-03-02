@@ -211,17 +211,25 @@ class CreateOrder extends Component
             ->where('store_id', $this->user->store_id)
             ->get();
 
+        $totalProducts = 0;
+
+        foreach ($this->selectedProducts as $selectedProduct) {
+            $totalProducts = $totalProducts + $selectedProduct['quantity'];
+        }
+        $totalProducts = abs((int)$totalProducts);
+
         try {
-            DB::transaction(function () use ($paymentMethodConfigs) {
+            DB::transaction(function () use ($paymentMethodConfigs, $totalProducts) {
                 $order = Order::create([
-                    'client_id'      => $this->client_id,
-                    'store_id'       => $this->user->store_id,
-                    'user_id'        => $this->user->id,
-                    'payment_method' => $this->payment_method,
-                    'installments'   => $this->installments,
-                    'gross_amount'   => round($this->total, 2),
-                    'final_amount'   => round($this->amount_received, 2),
-                    'description'    => $this->description,
+                    'client_id'         => $this->client_id,
+                    'store_id'          => $this->user->store_id,
+                    'user_id'           => $this->user->id,
+                    'payment_method'    => $this->payment_method,
+                    'installments'      => $this->installments,
+                    'gross_amount'      => round($this->total, 2),
+                    'final_amount'      => round($this->amount_received, 2),
+                    'quantity_products' => $totalProducts,
+                    'description'       => $this->description,
                 ]);
 
                 foreach ($this->selectedProducts as $selectedItem) {
